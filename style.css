@@ -1,0 +1,25 @@
+/* apply a natural box layout model to all elements */
+*, *:before, *:after {
+  -moz-box-sizing: border-box; 
+  -webkit-box-sizing: border-box; 
+  box-sizing: border-box;
+ }
+
+.editor {
+	display: inline;
+}
+
+textarea {
+	display: inline;
+	resize: none;
+	height: 50%;
+	border: 1px solid black;
+}
+
+#wysihtml5-outline {
+	width: 20%;
+}
+
+#wysihtml5-textarea {
+	width: 78%;
+}

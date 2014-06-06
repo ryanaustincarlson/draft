@@ -1,1 +1,46 @@
-Coming Soon!
+<html>
+
+<head>
+<!-- wysihtml5 parser rules -->
+<script src="wysihtml5/parser_rules/advanced.js"></script>
+<!-- Library -->
+<script src="wysihtml5/dist/wysihtml5-0.3.0.min.js"></script>
+
+<!-- css -->
+<link rel="stylesheet" type="text/css" href="style.css" />
+
+<title>
+Title
+</title>
+
+<!-- <link rel="stylesheet" href="../wysihtml5/website/css/stylesheet.css" -->
+
+</head>
+
+
+
+<body>
+<div class="editor" id="outline-editor" >
+	<textarea id="wysihtml5-outline" ></textarea>
+</div>
+
+<div class="editor" id="editor" >
+	<textarea id="wysihtml5-textarea" ></textarea>
+</div>
+
+<script type="text/javascript" src="editor.js"></script>
+
+<script type="text/javascript">
+	// var outline = new WysihtmlEditor("wysihtml5-outline", "outline-editor");
+	// var editor = new WysihtmlEditor("wysihtml5-textarea", "editor");
+	console.log("outline: " + outline.html(document))
+	console.log("editor: " + editor.html(document))
+</script>
+
+<h2>Log</h2>
+<div id="log" />
+
+<script type="text/javascript" src="analyze.js"></script>	
+
+</body>
+</html>
