@@ -20,21 +20,27 @@ Title
 
 
 <body>
+<div class="toolbar" id="wysihtml5-outline-toolbar" >
+</div>
 <div class="editor" id="outline-editor" >
-	<textarea id="wysihtml5-outline" ></textarea>
+	<!-- <textarea id="wysihtml5-outline" ></textarea> -->
 </div>
 
 <div class="editor" id="editor" >
-	<textarea id="wysihtml5-textarea" ></textarea>
+	<!-- <textarea id="wysihtml5-textarea" ></textarea> -->
 </div>
 
 <script type="text/javascript" src="editor.js"></script>
 
 <script type="text/javascript">
-	// var outline = new WysihtmlEditor("wysihtml5-outline", "outline-editor");
 	// var editor = new WysihtmlEditor("wysihtml5-textarea", "editor");
-	console.log("outline: " + outline.html(document))
-	console.log("editor: " + editor.html(document))
+	var outline = new WysihtmlOutlineEditor("wysihtml5-outline", "outline-editor");
+
+	// editor.initialize();
+	outline.initialize();
+
+	// console.log("editor: " + editor.html())
+	console.log("outline: " + outline.html())
 </script>
 
 <h2>Log</h2>
