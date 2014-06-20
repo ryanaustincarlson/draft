@@ -2,9 +2,9 @@
 
 <head>
 <!-- wysihtml5 parser rules -->
-<script src="wysihtml5/parser_rules/advanced.js"></script>
+<!-- <script src="wysihtml5/parser_rules/advanced.js"></script> -->
 <!-- Library -->
-<script src="wysihtml5/dist/wysihtml5-0.3.0.min.js"></script>
+<!-- <script src="wysihtml5/dist/wysihtml5-0.3.0.min.js"></script> -->
 
 <!-- css -->
 <link rel="stylesheet" type="text/css" href="style.css" />
@@ -20,21 +20,26 @@ Title
 
 
 <body>
-<div class="toolbar" id="wysihtml5-outline-toolbar" >
-</div>
+<!-- <div class="toolbar" id="wysihtml5-outline-toolbar" > -->
+<!-- </div> -->
 <div class="editor" id="outline-editor" >
-	<!-- <textarea id="wysihtml5-outline" ></textarea> -->
+	<h2>Outline</h2>
+	<!-- <textarea id="draft-outline" ></textarea> -->
 </div>
 
 <div class="editor" id="editor" >
-	<!-- <textarea id="wysihtml5-textarea" ></textarea> -->
+	<h2>Essay</h2>
+	<!-- <textarea id="draft-text" ></textarea> -->
 </div>
 
 <script type="text/javascript" src="editor.js"></script>
 
 <script type="text/javascript">
-	var editor = new WysihtmlEditor("wysihtml5-textarea", "editor");
-	var outline = new WysihtmlOutlineEditor("wysihtml5-outline", "outline-editor");
+	// var editor = new WysihtmlEditor("wysihtml5-textarea", "editor");
+	// var outline = new WysihtmlOutlineEditor("wysihtml5-outline", "outline-editor");
+
+	var editor = new DraftEditor("draft-text", "editor");
+	var outline = new DraftOutlineEditor("draft-outline", "outline-editor");
 
 	editor.initialize();
 	outline.initialize();
@@ -43,10 +48,11 @@ Title
 	console.log("outline: " + outline.html())
 </script>
 
-<h2>Log</h2>
-<div id="log" />
+<!-- <br><br><br><br> -->
+<!-- <h2>Log</h2> -->
+<!-- <div id="log" /> -->
 
-<script type="text/javascript" src="analyze.js"></script>	
+<!-- <script type="text/javascript" src="analyze.js"></script>	 -->
 
 </body>
 </html>

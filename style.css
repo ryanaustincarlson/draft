@@ -9,17 +9,21 @@
 	display: inline;
 }
 
-textarea {
+/*textarea {
 	display: inline;
 	resize: none;
 	height: 50%;
 	border: 1px solid black;
+}*/
+
+/*#wysihtml5-outline {*/
+#draft-outline {
+	border: 1px solid black;
+	/*width: 20%;*/
 }
 
-#wysihtml5-outline {
-	width: 20%;
-}
-
-#wysihtml5-textarea {
-	width: 78%;
+/*#wysihtml5-textarea {*/
+#draft-text {
+	border: 1px solid black;
+	/*width: 20%;*/
 }

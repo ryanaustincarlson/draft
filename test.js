@@ -1,10 +1,8 @@
-function Analyzer()
-{
-	this.update = function()
-	{
-		alert("update");
-	}
-}
 
-var a = new Analyzer()
-a.update()
+var textarea = document.getElementById("text");
+console.log(textarea);
+
+textarea.setAttribute('contenteditable', true);
+
+textarea.innerHTML += "<ul><li><input type=\"checkbox\"></li></ul>";
+// textarea.execCommand("insertUnorderedList", false, null);
