@@ -17,24 +17,19 @@ function DraftEditor(id, divID)
 	this.divID = divID;
 	this.document = document;
 
-	this.makeHtml = function (placeholder, autofocus) {
-		var html = "<p contenteditable=\"true\" id=\"" + this.id + "\" ";
-		// if (placeholder != null && placeholder.length > 0)
-		// {
-		// 	html += "placeholder=\"" + placeholder + "\" ";
-		// }
-		// if (autofocus)
-		// {
-		// 	html += "autofocus ";
-		// }
-		html += "></p>";
-		return html;
+	this.makeEditorArea = function (placeholder, autofocus) {
+		var p = this.document.createElement("p");
+		p.setAttribute("contenteditable", "true");
+		p.setAttribute("id", this.id);
+		
+		return p;
 	}
 
 	this.initialize = function()
 	{
 		var div = this.document.getElementById(this.divID);
-		div.innerHTML += this.makeHtml(null, false);
+		var p = this.makeEditorArea(null, false);
+		div.appendChild(p);
 
 		// this.createEditor()
 	}
@@ -47,6 +42,21 @@ function DraftOutlineEditor(id, divID)
 	this.id = id;
 	this.divID = divID;
 	this.document = document;
+	this.listItemIndex = 0;
+
+	this.createListItem = function()
+	{
+		li = this.document.createElement("li");
+		li.setAttribute("id", "list" + this.listItemIndex);
+		checkbox = this.document.createElement("input");
+		checkbox.setAttribute("id", "checkbox" + this.listItemIndex);
+		checkbox.setAttribute("type", "checkbox");
+		li.appendChild(checkbox);
+
+		this.listItemIndex++;
+
+		return li;
+	}
 
 	this.superInitialize = this.initialize
 	this.initialize = function()
@@ -58,18 +68,20 @@ function DraftOutlineEditor(id, divID)
 		var textarea = this.document.getElementById(this.id);
 		// textarea.value += "<ul><li></li></ul>";
 		// textarea.value += "<b>Hi</b>";
-		// var list = this.document.createElement("ul");
-		// var item = this.document.createElement("li");
-		// list.appendChild(item);
-		// html.appendChild(list);
-		textarea.innerHTML += '<ul><li><input type="checkbox"></li></ul>'
+		this.list = this.document.createElement("ul");
+		this.list.setAttribute("id", "outline-ul");
+		var listItem = this.createListItem();
+		this.list.appendChild(listItem);
+		textarea.appendChild(this.list);
+
 
 		textarea.addEventListener("keydown", 
 			function (e)
 			{
 				if (e.keyCode == 13)
 				{
-					alert("Enter");
+					// var newListItem = this.createListItem();
+					// list.appendChild(newListItem);
 				}
 			}, false);
 	}	
