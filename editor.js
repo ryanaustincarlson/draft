@@ -48,42 +48,54 @@ function DraftOutlineEditor(id, divID)
 	{
 		li = this.document.createElement("li");
 		li.setAttribute("id", "list" + this.listItemIndex);
-		checkbox = this.document.createElement("input");
-		checkbox.setAttribute("id", "checkbox" + this.listItemIndex);
-		checkbox.setAttribute("type", "checkbox");
-		li.appendChild(checkbox);
+		// checkbox = this.document.createElement("input");
+		// checkbox.setAttribute("id", "checkbox" + this.listItemIndex);
+		// checkbox.setAttribute("type", "checkbox");
+		// li.appendChild(checkbox);
 
 		this.listItemIndex++;
 
 		return li;
 	}
 
+	this.addCheckboxes = function()
+	{
+		for (var i=0; i<this.list.children.length; i++)
+		{
+			var child = this.list.children[i];
+			child.setAttribute("id", "list" + i);
+			for (var j=0; j<child.children.length; j++)
+			{
+				var baby = child.children[j];
+				if (baby.tagName != "INPUT")
+				{
+					child.removeChild(baby);
+				}
+			}
+			if (child.children.length == 0 || child.children[0].tagName != "INPUT")
+			{
+				checkbox = this.document.createElement("input");
+				checkbox.setAttribute("id", "checkbox" + i);
+				checkbox.setAttribute("type", "checkbox");
+				child.appendChild(checkbox);
+			}
+		}
+	}
+
 	this.superInitialize = this.initialize
 	this.initialize = function()
 	{
 		this.superInitialize()
-		// wysihtml5.commands.insertUnorderedList.exec(this.editor.composer, 'insertUnorderedList')
-		// this.editor.composer.commands.exec("insertUnorderedList");
 
 		var textarea = this.document.getElementById(this.id);
-		// textarea.value += "<ul><li></li></ul>";
-		// textarea.value += "<b>Hi</b>";
+		
 		this.list = this.document.createElement("ul");
 		this.list.setAttribute("id", "outline-ul");
 		var listItem = this.createListItem();
 		this.list.appendChild(listItem);
 		textarea.appendChild(this.list);
 
-
-		textarea.addEventListener("keydown", 
-			function (e)
-			{
-				if (e.keyCode == 13)
-				{
-					// var newListItem = this.createListItem();
-					// list.appendChild(newListItem);
-				}
-			}, false);
+		this.addCheckboxes();
 	}	
 }
 

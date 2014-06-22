@@ -44,26 +44,6 @@ Title
 	editor.initialize();
 	outline.initialize();
 
-	var configureItems = function()
-	{
-		console.log("enter");
-		console.log("outline.list: " + outline.list);
-		console.log("outline.list.children: " + outline.list.children);
-		console.log("outline.list.children.length: " + outline.list.children.length);
-		for (var i=0; i<outline.list.children.length; i++)
-		{
-			var child = outline.list.children[i];
-			console.log("child[" + i + "] = " + child);
-			if (child.children.length == 0 || child.children[0].tagName != "INPUT")
-			{
-				outline.list.removeChild(child);
-			}
-		}
-
-		var newListItem = outline.createListItem();
-		outline.list.appendChild(newListItem);
-	}
-
 	document.getElementById("draft-outline").addEventListener("keydown", 
 			function (e)
 			{
@@ -71,11 +51,8 @@ Title
 				if (e.keyCode == 13)
 				{
 					setTimeout( function() {
-						configureItems()
+						outline.addCheckboxes();
 					}, 1);
-					
-
-					
 				}
 			}, false);
 
