@@ -33,6 +33,14 @@ function DraftEditor(id, divID)
 
 		// this.createEditor()
 	}
+
+	this.prepareForProcessing = function()
+	{
+		var sentences = []
+		var text = this.document.getElementById(this.id).textContent;
+		var splits = text.split('.');
+		return splits;
+	}
 }
 
 DraftEditor.prototype = new Editor();
@@ -96,7 +104,24 @@ function DraftOutlineEditor(id, divID)
 		textarea.appendChild(this.list);
 
 		this.addCheckboxes();
+	}
+
+	this.prepareForProcessing = function()
+	{
+		var bullets = []
+		for (var i=0; i<this.list.children.length; i++)
+		{
+			var child = this.list.children[i];
+
+			var bullet = {
+				id : child.getAttribute("id"),
+				text : child.textContent
+			};
+			bullets.push(bullet);
+		}
+		return bullets;
 	}	
+
 }
 
 DraftOutlineEditor.prototype = new DraftEditor();
