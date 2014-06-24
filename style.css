@@ -5,9 +5,9 @@
   box-sizing: border-box;
  }
 
-.editor {
+/*.editor {
 	display: inline;
-}
+}*/
 
 /*textarea {
 	display: inline;
@@ -16,14 +16,18 @@
 	border: 1px solid black;
 }*/
 
-/*#wysihtml5-outline {*/
-#draft-outline {
+#draft-outline, #draft-text {
 	border: 1px solid black;
-	/*width: 20%;*/
 }
 
-/*#wysihtml5-textarea {*/
-#draft-text {
-	border: 1px solid black;
-	/*width: 20%;*/
+#outline-editor {
+	float: left;
+	margin-right: 10px;
+	width: 30%;
+	background-color: #F5F5F5;
+}
+
+#editor {
+	float: left;
+	width: 69%;
 }

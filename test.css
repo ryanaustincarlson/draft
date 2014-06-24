@@ -1,7 +1,12 @@
-#t1, #t2, #t1edit, #t2edit {
+
+#d1 {
 	float: left;
+	margin-right: 10px;
+	width: 30%;
+	background-color: #F5F5F5;
 }
 
-d1, d2 {
-	display: inline-block;
+#d2 {
+	float: left;
+	width: 69%;
 }
