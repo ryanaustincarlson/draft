@@ -35,6 +35,7 @@ Title
 </div>
 
 <script type="text/javascript" src="editor.js"></script>
+<script type="text/javascript" src="analyze.js"></script>
 
 <script type="text/javascript">
 	// var editor = new WysihtmlEditor("wysihtml5-textarea", "editor");
@@ -60,8 +61,9 @@ Title
 
 	function analyze()
 	{
-		var bulletPoints = outline.prepareForProcessing();
-		var sentences = editor.prepareForProcessing();
+		var analyzer = new Analyzer(editor, outline);
+		
+		analyzer.analyze()
 	}
 	// console.log("editor: " + editor.html())
 	// console.log("outline: " + outline.html())

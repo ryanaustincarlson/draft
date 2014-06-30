@@ -38,8 +38,24 @@ function DraftEditor(id, divID)
 	{
 		var sentences = []
 		var text = this.document.getElementById(this.id).textContent;
-		var splits = text.split('.');
-		return splits;
+		var start = 0;
+		for (var i=0; i<text.length; i++)
+		{
+			var letter = text[i];
+			if (letter == '.')
+			{
+				var sentence = {
+					text : text.substring(start, i),
+					start : start,
+					end : i
+				};
+				sentences.push(sentence);
+				start = i+1;
+			}
+			
+		}
+		// var splits = text.split('.');
+		return sentences;
 	}
 }
 
@@ -113,9 +129,20 @@ function DraftOutlineEditor(id, divID)
 		{
 			var child = this.list.children[i];
 
+			var checkboxID = null;
+			for (var c=0; c<child.children.length; c++)
+			{
+				var possibleCheckbox = child.children[c];
+				if (possibleCheckbox.getAttribute("type") == "checkbox")
+				{
+					checkboxID = possibleCheckbox.getAttribute("id");
+				}
+			}
+
 			var bullet = {
 				id : child.getAttribute("id"),
-				text : child.textContent
+				text : child.textContent,
+				checkboxID : checkboxID
 			};
 			bullets.push(bullet);
 		}
