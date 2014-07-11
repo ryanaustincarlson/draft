@@ -39,6 +39,7 @@ function DraftEditor(id, divID)
 		var sentences = []
 		var text = this.document.getElementById(this.id).textContent;
 		var start = 0;
+		// split on '.'
 		for (var i=0; i<text.length; i++)
 		{
 			var letter = text[i];
@@ -54,7 +55,6 @@ function DraftEditor(id, divID)
 			}
 			
 		}
-		// var splits = text.split('.');
 		return sentences;
 	}
 }

@@ -58,3 +58,41 @@ function Analyzer(editor, outline)
 		return this.colors[this.currentColorIdx++];
 	}
 }
+
+
+function Matcher()
+{
+	this.sentenceFeatureMapping = {'a':'b'};
+}
+
+function CosineMatcher()
+{
+	this.matches = function(s1, s2)
+	{
+		console.log(this.sentenceFeatureMapping)
+	}
+
+	this.features = function(s)
+	{
+		s = s.replace(/[\.,-\/#!?$%\^&\*;:{}=\-_`~()]/g,"");
+		s = s.replace(/\s{2,}/g," ");
+		var words = s.split(" ");
+		var counts = {}
+		for (var w=0; w < words.length; w++)
+		{
+			var word = words[w];
+			if (!counts[word])
+			{
+				counts[word] = 0;
+			}
+			counts[word]++;
+		}
+		return counts
+	}
+}
+
+CosineMatcher.prototype = new Matcher();
+
+var matcher = new CosineMatcher();
+var x = matcher.features("hello there. how are you?")
+console.log(x)
