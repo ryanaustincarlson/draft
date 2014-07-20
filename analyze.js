@@ -4,6 +4,8 @@ function Analyzer(editor, outline)
 	this.editor = editor;
 	this.outline = outline;
 
+	this.matcher = new CosineMatcher();
+
 	this.analyze = function()
 	{
 		var sentences = editor.prepareForProcessing();
@@ -18,7 +20,11 @@ function Analyzer(editor, outline)
 			for (var bulletIdx = 0; bulletIdx < bullets.length; bulletIdx++)
 			{
 				var bullet = bullets[bulletIdx];
-				if (sentence.text == bullet.text)
+				// if (sentence.text == bullet.text)
+				var match = this.matcher.matches(sentence.text, bullet.text);
+				console.log("sentence: " + sentence.text + ", bullet: " + bullet.text + ", match: " + match)
+				if (match > .9)
+				// if (this.matcher.matches(sentence.text, bullet.text) > .9)
 				{
 					console.log(sentence.text);
 					var colorize = '<tag style="background-color:' + this.getNextColor() + ';"">';
@@ -112,7 +118,7 @@ function CosineMatcher()
 				overlapping_words.push(key)
 			}
 		}
-		console.log(overlapping_words);
+		// console.log(overlapping_words);
 
 		var vector1 = []
 		var vector2 = []
