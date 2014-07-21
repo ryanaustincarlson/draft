@@ -23,14 +23,14 @@ function Analyzer(editor, outline)
 				// if (sentence.text == bullet.text)
 				var match = this.matcher.matches(sentence.text, bullet.text);
 				console.log("sentence: " + sentence.text + ", bullet: " + bullet.text + ", match: " + match)
-				if (match > .9)
+				if (match > .7)
 				// if (this.matcher.matches(sentence.text, bullet.text) > .9)
 				{
 					console.log(sentence.text);
 					var colorize = '<tag style="background-color:' + this.getNextColor() + ';"">';
 
 					// outline text
-					var bulletText = [colorize, sentence.text, '</tag>'].join('');
+					var bulletText = [colorize, bullet.text, '</tag>'].join('');
 					var bulletHTML = this.outline.document.getElementById(bullet.id);
 					bulletHTML.innerHTML = bulletHTML.innerHTML.replace(bullet.text, bulletText);
 
@@ -57,7 +57,7 @@ function Analyzer(editor, outline)
 		editor.document.getElementById(editor.id).innerHTML = textHtml;
 	}
 
-	this.colors = ['#0066FF', '#33CCFF', '#66FF00', '#33FF99', '#CC6699']
+	this.colors = ['#33CCFF', '#66FF00', '#33FF99', '#CC6699', '#0066FF']
 	this.currentColorIdx = 0;
 	this.getNextColor = function()
 	{
@@ -172,9 +172,10 @@ function CosineMatcher()
 
 	this.features = function(s)
 	{
-		console.log("getting features")
 		s = s.replace(/[\.,-\/#!?$%\^&\*;:{}=\-_`~()]/g,"");
 		s = s.replace(/\s{2,}/g," ");
+		s = s.replace(/^[ ]+/g, "");
+		s = s.replace(/[ ]+$/g, "");
 		var words = s.split(" ");
 		var counts = {}
 		for (var w=0; w < words.length; w++)
@@ -192,14 +193,14 @@ function CosineMatcher()
 
 CosineMatcher.prototype = new Matcher();
 
-var matcher = new CosineMatcher();
-var s1 = "hello hello there. how are you?"
-var s2 = "hi friend. how are you doing?"
-var s3 = "blah argh what okay"
+// var matcher = new CosineMatcher();
+// var s1 = " hello hello there. how are you?"
+// var s2 = "hi friend. how are you doing?"
+// var s3 = "blah argh what okay"
 
-console.log(matcher.matches(s1, s1));
-console.log(matcher.matches(s2, s2));
-console.log(matcher.matches(s1, s2));
+// console.log(matcher.matches(s1, s1));
+// console.log(matcher.matches(s2, s2));
+// console.log(matcher.matches(s1, s2));
 // console.log(matcher.matches(s1, s3));
 // console.log(matcher.matches(s2, s3));
 // matcher.matches(s1, s2)

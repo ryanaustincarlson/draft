@@ -43,7 +43,7 @@ function DraftEditor(id, divID)
 		for (var i=0; i<text.length; i++)
 		{
 			var letter = text[i];
-			if (letter == '.')
+			if (letter == '.' || letter == '!' || letter == '?')
 			{
 				var sentence = {
 					text : text.substring(start, i),
@@ -101,7 +101,19 @@ function DraftOutlineEditor(id, divID)
 				checkbox = this.document.createElement("input");
 				checkbox.setAttribute("id", "checkbox" + i);
 				checkbox.setAttribute("type", "checkbox");
-				child.appendChild(checkbox);
+				if (child.innerHTML == null)
+				{
+					child.appendChild(checkbox);
+				}
+				else
+				{
+					// FIXME: this is almost certainly the wrong way to deal
+					// with text that already exists
+					html = child.innerHTML;
+					child.innerHTML = "";
+					child.appendChild(checkbox)
+					child.innerHTML += html
+				}
 			}
 		}
 	}

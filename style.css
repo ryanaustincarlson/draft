@@ -24,14 +24,16 @@
 	float: left;
 	margin-right: 10px;
 	width: 30%;
+	min-height: 80%;
 	background-color: #F5F5F5;
 }
 
 #editor {
 	float: left;
 	width: 69%;
+	min-height: 80%;
 }
 
-#analyze-button {
+#analyze-button, #fillin-button {
 	float:right;
 }

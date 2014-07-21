@@ -10,7 +10,7 @@
 <link rel="stylesheet" type="text/css" href="style.css" />
 
 <title>
-Title
+Draft
 </title>
 
 <!-- <link rel="stylesheet" href="../wysihtml5/website/css/stylesheet.css" -->
@@ -20,6 +20,8 @@ Title
 
 
 <body>
+<!-- load jquery -->
+<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js" ></script>
 <!-- <div class="toolbar" id="wysihtml5-outline-toolbar" > -->
 <!-- </div> -->
 
@@ -30,6 +32,7 @@ Title
 
 <div class="editor" id="editor" >
 	<input id="analyze-button" type="button" value="Analyze" onclick="analyze()">
+	<input id="fillin-button" type="button" value="Fill In" onclick="fillin()">
 	<h2>Essay</h2>
 	<!-- <textarea id="draft-text" ></textarea> -->
 </div>
@@ -54,6 +57,7 @@ Title
 				if (e.keyCode == 13)
 				{
 					setTimeout( function() {
+						alert("add checkboxes");
 						outline.addCheckboxes();
 					}, 1);
 				}
@@ -67,6 +71,28 @@ Title
 	}
 	// console.log("editor: " + editor.html())
 	// console.log("outline: " + outline.html())
+</script>
+
+<script type="text/javascript">
+	// seed with some existing stuff
+	function fillin()
+	{
+		var list = document.getElementById("outline-ul");
+		console.log(list.children)
+
+		var listItem = list.children[0];
+		listItem.innerHTML += "This is the first point of the essay.";
+
+		listItem = outline.createListItem();
+		listItem.innerHTML += "Here's the second point, which is also really important!"
+		console.log(listItem);
+		list.appendChild(listItem);
+
+		outline.addCheckboxes()
+
+		var essay = document.getElementById("draft-text");
+		essay.innerHTML += "I present the first point of the essay. The second point is also really important."
+	}
 </script>
 
 <!-- <br><br><br><br> -->
