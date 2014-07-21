@@ -23,7 +23,7 @@ function Analyzer(editor, outline)
 				// if (sentence.text == bullet.text)
 				var match = this.matcher.matches(sentence.text, bullet.text);
 				console.log("sentence: " + sentence.text + ", bullet: " + bullet.text + ", match: " + match)
-				if (match > .7)
+				if (match > .6)
 				// if (this.matcher.matches(sentence.text, bullet.text) > .9)
 				{
 					console.log(sentence.text);
@@ -172,6 +172,7 @@ function CosineMatcher()
 
 	this.features = function(s)
 	{
+		s = s.toLowerCase()
 		s = s.replace(/[\.,-\/#!?$%\^&\*;:{}=\-_`~()]/g,"");
 		s = s.replace(/\s{2,}/g," ");
 		s = s.replace(/^[ ]+/g, "");
