@@ -1,6 +1,5 @@
 function Editor(divID, document)
 {
-	console.log("Editor created");
 	this.divID = divID;
 	this.rawText = "";
 	this.document = document;

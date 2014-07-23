@@ -78,24 +78,24 @@ Draft
 	function fillin()
 	{
 		var list = document.getElementById("outline-ul");
-		console.log(list.children)
+		// console.log(list.children)
 
 		var listItem = list.children[0];
 		listItem.innerHTML += "This is the first point of the essay.";
 
 		listItem = outline.createListItem();
 		listItem.innerHTML += "Here's the second point, which is also really important!"
-		console.log(listItem);
+		// console.log(listItem);
 		list.appendChild(listItem);
 
 		listItem = outline.createListItem();
 		listItem.innerHTML += "And look, a third point!"
-		console.log(listItem);
+		// console.log(listItem);
 		list.appendChild(listItem);
 
 		listItem = outline.createListItem();
 		listItem.innerHTML += "The fourth point is the very best."
-		console.log(listItem);
+		// console.log(listItem);
 		list.appendChild(listItem);
 
 		outline.addCheckboxes()

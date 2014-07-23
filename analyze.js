@@ -5,30 +5,28 @@ function Analyzer(editor, outline)
 	this.outline = outline;
 
 	this.matcher = new CosineMatcher();
+	this.sorter = new MatchSorter(this.matcher);
 
 	this.analyze = function()
 	{
 		var sentences = editor.prepareForProcessing();
 		var bullets = outline.prepareForProcessing();
 
+		var matches = this.sorter.sort(sentences, bullets);
+
 		var highlighter = new Highlighter(this.editor.document);
 
-		for (var sentenceIdx = 0; sentenceIdx < sentences.length; sentenceIdx++)
+		for (var i=0; i<matches.length; i++)
 		{
+			var sentenceIdx = matches[i]['sentenceIdx'];
+			var bulletIdx = matches[i]['bulletIdx'];
+
 			var sentence = sentences[sentenceIdx];
-			for (var bulletIdx = 0; bulletIdx < bullets.length; bulletIdx++)
-			{
-				var bullet = bullets[bulletIdx];
-				// if (sentence.text == bullet.text)
-				var match = this.matcher.matches(sentence.text, bullet.text);
-				console.log("sentence: " + sentence.text + ", bullet: " + bullet.text + ", match: " + match)
-				if (match > .6)
-				// if (this.matcher.matches(sentence.text, bullet.text) > .9)
-				{
-					highlighter.highlight(sentence, bullet);
-				}
-			}
+			var bullet = bullets[bulletIdx];
+
+			highlighter.highlight(sentence, bullet);
 		}
+
 		this.editor.document.getElementById(editor.id).innerHTML = highlighter.textHtml
 	}
 }
@@ -100,8 +98,8 @@ function CosineMatcher()
 			vector2.push(ftr2 ? ftr2 : 0);
 		}
 
-		console.log(features1)
-		console.log(features2)
+		// console.log(features1)
+		// console.log(features2)
 
 		if (features1 == features2)
 		{
@@ -171,7 +169,7 @@ function Highlighter(document)
 
 	this.highlight = function(sentence, bullet)
 	{
-		console.log(sentence.text);
+		// console.log(sentence.text);
 		var colorize = '<tag style="background-color:' + this.getNextColor() + ';"">';
 
 		// outline text
@@ -191,7 +189,7 @@ function Highlighter(document)
 		var endSlice = this.textHtml.slice(sentence.end + this.offset);
 
 		this.textHtml = [beforeSlice, colorize, middleSlice, '</tag>', endSlice].join('');
-		console.log(">>textHTML: " + this.textHtml);
+		// console.log(">>textHTML: " + this.textHtml);
 
 		this.offset += this.textHtml.length - beforeLength;
 	}
@@ -203,3 +201,79 @@ function Highlighter(document)
 		return this.colors[this.currentColorIdx++];
 	}
 }
+
+function MatchSorter(matcher)
+{
+	this.matcher = matcher;
+
+	this.sort = function(sentences, bullets)
+	{
+		var matches = []
+		for (var sentenceIdx = 0; sentenceIdx < sentences.length; sentenceIdx++)
+		{
+			var sentence = sentences[sentenceIdx];
+			for (var bulletIdx = 0; bulletIdx < bullets.length; bulletIdx++)
+			{
+				var bullet = bullets[bulletIdx];
+				// if (sentence.text == bullet.text)
+				var match = this.matcher.matches(sentence.text, bullet.text);
+				// console.log("sentence: " + sentence.text + ", bullet: " + bullet.text + ", match: " + match)
+				if (match > 0) // FIXME: .6 or something
+				// if (this.matcher.matches(sentence.text, bullet.text) > .9)
+				{
+					// implement the var matches thing
+
+					// highlighter.highlight(sentence, bullet);
+					matches.push({
+						'match' : match,
+						'sentenceIdx' : sentenceIdx,
+						'bulletIdx' : bulletIdx
+					});
+				}
+			}
+		}
+
+		matches.sort(function(a, b) {
+			return b['match'] - a['match'];
+		})
+
+		var usedBullets = []
+		var usedSentences = []
+		var culledMatches = []
+
+		for (var i=0; i<matches.length; i++)
+		{
+			var bulletIdx = matches[i]['bulletIdx'];
+			var sentenceIdx = matches[i]['sentenceIdx'];
+
+			// if we haven't claimed this bullet index and sentence index yet
+			if (usedBullets.indexOf(bulletIdx) == -1 && usedSentences.indexOf(sentenceIdx) == -1)
+			{
+				culledMatches.push(matches[i]);
+				usedBullets.push(bulletIdx);
+				usedSentences.push(sentenceIdx);
+			}
+		}
+
+		console.log("matches...");
+		for (var i=0; i<matches.length; i++)
+		{
+			console.log(matches[i]);
+		}
+
+		culledMatches.sort(function(a, b) {
+			return a['sentenceIdx'] - b['sentenceIdx']
+		})				
+
+		console.log("culled matches...");
+		for (var i=0; i<culledMatches.length; i++)
+		{
+			console.log(culledMatches[i]);
+		}
+		return culledMatches;
+	}
+}
+
+// TODO: remove me!
+// var matcher = new CosineMatcher();
+// console.log(matcher.matches("My second point is really important, too", "Here's the second point, which is also really important!"))
