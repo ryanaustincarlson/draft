@@ -14,6 +14,21 @@ Draft
 </title>
 
 <!-- <link rel="stylesheet" href="../wysihtml5/website/css/stylesheet.css" -->
+<script src="//ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js" type="text/javascript"></script>
+<script src="//ajax.googleapis.com/ajax/libs/jqueryui/1/jquery-ui.min.js" type="text/javascript"></script>
+
+<link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.1.0/css/bootstrap.min.css" />
+<script src="//netdna.bootstrapcdn.com/bootstrap/3.1.0/js/bootstrap.min.js" type="text/javascript"></script>
+
+<link rel="stylesheet" href="./fancytree/skin-bootstrap/ui.fancytree.css" type="text/css" class="skinswitcher">
+
+<script src="./fancytree/src/jquery.fancytree.js" type="text/javascript"></script>
+<script src="./fancytree/src/jquery.fancytree.edit.js" type="text/javascript"></script>
+<script src="./fancytree/src/jquery.fancytree.glyph.js" type="text/javascript"></script>
+<script src="./fancytree/src/jquery.fancytree.dnd.js" type="text/javascript"></script>
+
+<!-- Add code to initialize the tree when the document is loaded: -->
+<script src="fancytree.js" type="text/javascript"> </script>
 
 </head>
 
@@ -21,13 +36,14 @@ Draft
 
 <body>
 <!-- load jquery -->
-<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js" ></script>
+<!-- <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js" ></script> -->
 <!-- <div class="toolbar" id="wysihtml5-outline-toolbar" > -->
 <!-- </div> -->
 
 <div class="editor" id="outline-editor" >
 	<h2>Outline</h2>
 	<!-- <textarea id="draft-outline" ></textarea> -->
+	<div id="tree"> </div>
 </div>
 
 <div class="editor" id="editor" >
@@ -45,23 +61,29 @@ Draft
 	// var outline = new WysihtmlOutlineEditor("wysihtml5-outline", "outline-editor");
 
 	var editor = new DraftEditor("draft-text", "editor");
-	var outline = new DraftOutlineEditor("draft-outline", "outline-editor");
+	// var outline = new DraftOutlineEditor("draft-outline", "outline-editor");
+	var outline = new DraftTreeOutlineEditor("draft-outline", "outline-editor");
 
 	editor.initialize();
 	outline.initialize();
 
-	document.getElementById("draft-outline").addEventListener("keydown", 
-			function (e)
-			{
-				console.log("keydown");
-				if (e.keyCode == 13)
-				{
-					setTimeout( function() {
-						alert("add checkboxes");
-						outline.addCheckboxes();
-					}, 1);
-				}
-			}, false);
+	$(function() {
+		var bullets = outline.prepareForProcessing();
+	});
+	// outline.prepareForProcessing();
+
+	// document.getElementById("draft-outline").addEventListener("keydown", 
+	// 		function (e)
+	// 		{
+	// 			console.log("keydown");
+	// 			if (e.keyCode == 13)
+	// 			{
+	// 				setTimeout( function() {
+	// 					alert("add checkboxes");
+	// 					outline.addCheckboxes();
+	// 				}, 1);
+	// 			}
+	// 		}, false);
 
 	function analyze()
 	{
@@ -77,28 +99,28 @@ Draft
 	// seed with some existing stuff
 	function fillin()
 	{
-		var list = document.getElementById("outline-ul");
-		// console.log(list.children)
+		// var list = document.getElementById("outline-ul");
+		// // console.log(list.children)
 
-		var listItem = list.children[0];
-		listItem.innerHTML += "This is the first point of the essay.";
+		// var listItem = list.children[0];
+		// listItem.innerHTML += "This is the first point of the essay.";
 
-		listItem = outline.createListItem();
-		listItem.innerHTML += "Here's the second point, which is also really important!"
-		// console.log(listItem);
-		list.appendChild(listItem);
+		// listItem = outline.createListItem();
+		// listItem.innerHTML += "Here's the second point, which is also really important!"
+		// // console.log(listItem);
+		// list.appendChild(listItem);
 
-		listItem = outline.createListItem();
-		listItem.innerHTML += "And look, a third point!"
-		// console.log(listItem);
-		list.appendChild(listItem);
+		// listItem = outline.createListItem();
+		// listItem.innerHTML += "And look, a third point!"
+		// // console.log(listItem);
+		// list.appendChild(listItem);
 
-		listItem = outline.createListItem();
-		listItem.innerHTML += "The fourth point is the very best."
-		// console.log(listItem);
-		list.appendChild(listItem);
+		// listItem = outline.createListItem();
+		// listItem.innerHTML += "The fourth point is the very best."
+		// // console.log(listItem);
+		// list.appendChild(listItem);
 
-		outline.addCheckboxes()
+		// outline.addCheckboxes()
 
 		var essay = document.getElementById("draft-text");
 		essay.innerHTML += "I present the first point of the essay. My second point is really important, too. The fourth is the best point. But look, found my third point!"

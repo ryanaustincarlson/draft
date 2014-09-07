@@ -173,13 +173,15 @@ function Highlighter(document)
 		var colorize = '<tag style="background-color:' + this.getNextColor() + ';"">';
 
 		// outline text
-		var bulletText = [colorize, bullet.text, '</tag>'].join('');
-		var bulletHTML = this.document.getElementById(bullet.id);
-		bulletHTML.innerHTML = bulletHTML.innerHTML.replace(bullet.text, bulletText);
+		bullet.highlight(this.getNextColor());
+		// var bulletText = [colorize, bullet.text, '</tag>'].join('');
+		// var bulletHTML = this.document.getElementById(bullet.id);
+		// bulletHTML.innerHTML = bulletHTML.innerHTML.replace(bullet.text, bulletText);
 
 		// checkbox
-		var checkbox = this.document.getElementById(bullet.checkboxID)
-		checkbox.checked = true;
+		bullet.markCheckbox(true);
+		// var checkbox = this.document.getElementById(bullet.checkboxID)
+		// checkbox.checked = true;
 
 		// essay text
 		var beforeLength = this.textHtml.length;

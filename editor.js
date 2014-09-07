@@ -164,3 +164,75 @@ function DraftOutlineEditor(id, divID)
 
 DraftOutlineEditor.prototype = new DraftEditor();
 
+function DraftOutlineBulletPoint(node)
+{
+	this.node = node;
+	this.text = node.title;
+	this.highlight = function(color)
+	{
+		// highlight with color
+		console.log("highlighting (" + this.text + ") with " + color);
+	}
+
+	this.markCheckbox = function(marked)
+	{
+		console.log("marking checkbox (" + this.text + ") with " + marked)
+		this.node.setSelected(true);
+	}
+}
+
+function DraftTreeOutlineEditor(id, divID)
+{
+	this.id = id;
+	this.divID = divID;
+	this.document = document;
+	this.listItemIndex;
+
+	this.initialize = function()
+	{
+		// extract the code that's currently in index.html...
+	}
+
+	this.prepareForProcessing = function()
+	{
+		console.log("prapre for processing");
+
+		var flattenTree = function(node)
+		{
+			var fullList = node.isRoot() ? [] : [node];
+			var children = node.getChildren();
+			if (children)
+			{
+				for (var i=0; i<children.length; i++)
+				{
+					var child = children[i];
+					var grandchildren = flattenTree(child);
+					fullList = fullList.concat(grandchildren);
+				}
+			}
+			return fullList;
+		}
+
+		var root = $("#tree").fancytree("getRootNode");
+		var children = flattenTree(root);
+
+		var bullets = []
+		for (var i=0; i<children.length; i++)
+		{
+			var child = children[i];
+			bullets.push(new DraftOutlineBulletPoint(child));
+		}
+
+		return bullets;
+	}
+}
+
+DraftTreeOutlineEditor.prototype = new DraftEditor();
+
+
+
+
+
+
+
+
