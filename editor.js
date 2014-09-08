@@ -171,12 +171,15 @@ function DraftOutlineBulletPoint(node)
 	this.highlight = function(color)
 	{
 		// highlight with color
-		console.log("highlighting (" + this.text + ") with " + color);
+		// console.log("highlighting (" + this.text + ") with " + color);
+		// var tag = '<tag style="background-color:' + color + ';"">';
+		// var endTag = '</tag>';
+		// this.node.span.innerHTML = tag + this.node.span.innerHTML + endTag;
 	}
 
 	this.markCheckbox = function(marked)
 	{
-		console.log("marking checkbox (" + this.text + ") with " + marked)
+		// console.log("marking checkbox (" + this.text + ") with " + marked)
 		this.node.setSelected(true);
 	}
 }
