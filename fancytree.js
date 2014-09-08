@@ -32,12 +32,12 @@ $(function(){
       // source: {url: "ajax-tree-taxonomy.json", debugDelay: 1000},
       source: [
       {title: "This is the first point of the essay.", key: "1"},
-      {title: "Here's the second point, which is also really important!", key: "2", expanded:true, children: [
+      {title: "Here's the second point, which is also really important!", key: "2"}, //expanded:true, children: [
       {title: "And look, a third point!", key: "3"},
-      {title: "The fourth point is the very best.", key: "4", expanded:true, children: [
+      {title: "The fourth point is the very best.", key: "4"}, //expanded:true, children: [
         {title: "Here is some totally random text.", key: "5"},
-      ]},
-      ]}
+      // ]},
+      // ]}
       ],
       edit: {
         // Available options with their default:
