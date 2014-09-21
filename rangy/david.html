@@ -1,0 +1,356 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <script type="text/javascript" src="./src/rangy-core.js"></script>
+    <script type="text/javascript" src="./src/rangy-textrange.js"></script>
+    <script type="text/javascript" src="./src/rangy-cssclassapplier.js"></script>
+    <title>Text Highlighter Demo</title>
+
+    <style type="text/css">
+        body {
+            background-color: #efefff;
+        }
+        #outer {
+            height: 600px;
+            overflow-y: scroll;
+        }
+        #gutter {
+            width: 100px;
+            float: left;
+            margin: 30px 10px;
+            padding: 20px;
+            position: relative;
+        }
+        #sandbox {
+            width: 700px;
+            margin: 30px auto;
+            border: 1px solid #000;
+            border-radius: 3px;
+            padding: 20px;
+            background-color: #ffffff;
+            text-align: justify;
+            float: left;
+        }
+        .info-box {
+            border-radius: 2px;
+            box-shadow: 1px 1px 3px #afafaf;
+            font-size: 12px;
+            border: 1px solid #24aa27;
+            margin: 30px 0;
+            padding: 10px;
+            width: 70%;
+            background-color: #74e276;
+            font-family: sans-serif;
+        }
+        .note {
+            margin: 5px;
+            padding: 5px;
+            background-color: #ddd;
+        }
+        .blue {
+            background-color: #0bf;
+        }
+        .green {
+            background-color: #0f5;
+        }
+        .orange {
+            background-color: #fb0;
+        }
+        .special {
+            outline: 2px solid #a0f;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="info-box">
+        <button onclick="highlightRandomRanges()">Highlight Some Random Ranges</button>
+        <button onclick="clearHighlights()">Clear Random Ranges</button>
+        <button onclick="highlightSelection()">Mark Selection</button>
+        <button onclick="clearSpecial()">Clear Marked Selections</button>
+        <br>
+        <textarea id="startBox" cols=3 style="height:18px">5</textarea>Start
+        <br>
+        <textarea id="endBox" cols=3 style="height:18px">10</textarea>End
+        <br>
+        <button onclick="highlightCharacterRange()">Highlight Character Range</button>
+        <button onclick="clearCharacterRanges()">Clear Character Ranges</button>
+    </div>
+    <div id="outer">
+        <div contenteditable="true" id="sandbox">
+            0123456789
+            <br>0123456789
+            <br>(note that linebreaks are characters too)
+            <h1>Text Highlighter Editor Demo Using <a href="https://code.google.com/p/rangy/">Rangy 1.3a</a></h1>
+
+            <p id="p2">
+                In the excerpt <i>"The Mooring Mast"</i> by author Marcia Amidon Lusted, the builders of the Empire State Building faced some obstacles in attempting to allow dirigibles to dock there. A first obstacle the builders faced was the concern of the building collapein over time with "all the weight of the dirigibles. They would have to spend more money and time to create a frame for the Empire State Building to support the dirigibles." Paragraph 4 supports that obstacle "a thousand foot dirigible moored at the top of the building would add stress to the buildings frame". A second obstacle builders of the Empire State Building came upon on attempting to allow dirigibles to dock at the building was the concerns of the thousands of citizen just below the tall building. After german dirigible was on fire in Jersey they realized how serious they situation can become. "Owners of the Empire State Building realized how much worse it that accident could have been if it had taken place above a densely populated area such as downtown New York." These were two of the obstacles the builders of the Empire State Building faced.
+                <br>Apricots.
+            </p>
+
+            <ul>
+                <li>Sed lacete et nimre gravidae.</li>
+                <li>Vivete et decora petorius.</li>
+                <li>Trisatus erat deminus urna depricae.</li>
+            </ul>
+
+            <p id="p3">
+                Aliquam auctor, enim sit amet rhoncus sollicitudin, ligula nulla tempus dolor, interdum blandit arcu nunc vitae mauris. Sed sed nisi diam, nec varius neque. Nunc ut sapien odio, ac commodo felis. <span style="font-weight:bold">Patos
+        vitae risus scelerisque.</span> Cras porttitor sodales lacus, id hendrerit massa egestas in. Sed fermentum porttitor turpis lacinia fermentum. Donec molestie rutrum odio, id lacinia odio imperdiet non. <span style="font-weight:bold">Vestibulum ac velit</span> non? Mauris at neque tellus, nec hendrerit augue.
+            </p>
+
+            <pre>
+        Lorem
+          ipsum
+            dolor
+          sit
+        amet.</pre>
+
+            <h2>Nested structures</h2>
+
+            <div style="width: 40%; margin: 5px auto">
+                [Wrapper div]
+
+                <div style="margin: 8px">
+                    [Outer div] Text above inner div.
+
+                    <div style="margin: 8px">
+                        [Inner div 1] Text inside inner div 1.
+                    </div>
+
+                    <div style="margin: 8px">
+                        [Inner div 2] Text inside inner div 2.
+                    </div>
+
+                    [Outer div] Text below inner div.
+                </div>
+
+                [Wrapper div]
+            </div>
+
+            <h2>Image</h2>
+            <p>
+                <img src="http://farm1.staticflickr.com/40/113736041_ea31831d21_m.jpg" alt="Image" />
+            </p>
+            </fieldset>
+        </div>
+        <div id="gutter">Gutter</div>
+    </div>
+
+    <script type="text/javascript" id="snippet-source">
+        var lastRange = null;
+        var orangeApply;
+        var blueApply;
+        var greenApply;
+        var specialApply;
+        var commentCounter = 0;
+
+
+        function initialize() {
+            rangy.init();
+            orangeApply = rangy.createCssClassApplier("orange", {
+                normalize: false,
+                applyToEditableOnly: true
+            });
+            blueApply = rangy.createCssClassApplier("blue", {
+                normalize: false,
+                applyToEditableOnly: true
+            });
+            specialApply = rangy.createCssClassApplier("special", {
+                normalize: false,
+                applyToEditableOnly: true
+            });
+            greenApply = rangy.createCssClassApplier("green", {
+                normalize: false,
+                applyToEditableOnly: true
+            });
+        };
+
+
+        function clearHighlights() {
+            range = rangy.createRange();
+            range.selectNode(document.getElementById("sandbox"));
+            orangeApply.undoToRange(range, {
+                normalize: false
+            });
+            blueApply.undoToRange(range, {
+                normalize: false
+            });
+
+            gutter = document.getElementById("gutter")
+            while (gutter.firstChild) {
+                gutter.removeChild(gutter.firstChild);
+            }
+        }
+
+        function clearSpecial() {
+            range = rangy.createRange();
+            range.selectNode(document.getElementById("sandbox"));
+            specialApply.undoToRange(range, {
+                normalize: false
+            });
+        }
+
+        function clearCharacterRanges() {
+            range = rangy.createRange();
+            range.selectNode(document.getElementById("sandbox"));
+            greenApply.undoToRange(range, {
+                normalize: false
+            });
+        }
+
+        function highlightSelection() {
+            specialApply.toggleSelection();
+        }
+
+        function highlightRandomRanges() {
+            clearHighlights();
+
+            var ranges = getSentenceRanges();
+
+            var lastBottom = 0;
+
+            for (var i = 0; i < ranges.length; i++) {
+                //console.log(ranges[i]);
+                //console.log(ranges[i]+"");
+                sandbox = document.getElementById("sandbox")
+                gutter = document.getElementById("gutter")
+
+                if (Math.random() < 0.2) {
+                    range = rangy.createRange()
+                    range.selectCharacters(sandbox, ranges[i][0], ranges[i][1])
+                    if (Math.random() < 0.5) {
+                        //orangeApply.applyToRange(range, {normalize:false});
+                        color = "orange";
+                    } else {
+                        //blueApply.applyToRange(range, {normalize:false});
+                        color = "blue";
+                    }
+
+                    commentCounter++;
+                    commentIDClass = "comment" + commentCounter;
+
+                    myApply = rangy.createCssClassApplier(color + " " + commentIDClass, {
+                        normalize: false,
+                        applyToEditableOnly: true
+                    });
+                    myApply.applyToRange(range, {
+                        normalize: false
+                    });
+                                                
+                    element = document.getElementsByClassName(commentIDClass)[0]
+                    
+                    //this is a document-absolute sort of position -- subtract the parent element's position for something relative.
+                    var sandboxRect = sandbox.getBoundingClientRect();
+                    var highlightRect = element.getBoundingClientRect();
+                    
+                    //center the position in the middle of the span's box. 
+                    var notePosition = (highlightRect.top - sandboxRect.top) - (highlightRect.height / 2);
+                    
+                    //push it down below the last one.
+                    if(notePosition < lastBottom)
+                        notePosition = lastBottom+2;
+                    
+                    var note = document.createElement("div");
+                    note.setAttribute("class", "note " + color);
+                    
+                    //the parent element should use "relative" position, I think
+                    note.style.position = "absolute";
+                    note.style.top = notePosition+"px";
+                    var node = document.createTextNode("Highlighted " + ranges[i][0] + "-" + ranges[i][1]);
+                    note.appendChild(node);
+                    gutter.appendChild(note);
+                    
+                    //update the minimum allowed position.
+                    lastBottom = notePosition + note.clientHeight;
+
+                    //not using ranges here because the ranges may have been invalidated by edits
+                    note.onclick = function (commentIDClass, color, commentBox) {
+                        return function () {
+                            commentBox.classList.toggle(color);
+                            toggleClassForSelector(color, "." + commentIDClass);
+                            
+                        };
+                    }(commentIDClass, color, note);
+
+
+                    note.onmouseover = function (note, commentIDClass) {
+                        return function () {
+                            note.style.outline = "solid";
+                            addClassForSelector("special", "." + commentIDClass);
+                        }
+                    }(note, commentIDClass)
+
+                    note.onmouseout = function (note, commentIDClass) {
+                        return function () {
+                            note.style.outline = "none";
+                            removeClassForSelector("special", "." + commentIDClass);
+                        }
+                    }(note, commentIDClass)
+
+                }
+
+            }
+        }
+
+        function toggleClassForSelector(toggleClass, selector) {
+            var nodeList = document.querySelectorAll(selector);
+            for (var i = 0, length = nodeList.length; i < length; i++) {
+                nodeList[i].classList.toggle(toggleClass);
+            }
+        }
+
+        function addClassForSelector(toggleClass, selector) {
+            var nodeList = document.querySelectorAll(selector);
+            for (var i = 0, length = nodeList.length; i < length; i++) {
+                nodeList[i].classList.add(toggleClass);
+            }
+        }
+
+        function removeClassForSelector(toggleClass, selector) {
+            var nodeList = document.querySelectorAll(selector);
+            for (var i = 0, length = nodeList.length; i < length; i++) {
+                nodeList[i].classList.remove(toggleClass);
+            }
+        }
+
+        function highlightCharacterRange() {
+            start = parseInt(document.getElementById("startBox").value);
+            end = parseInt(document.getElementById("endBox").value);
+            sandbox = document.getElementById("sandbox")
+
+
+            console.log(start + "," + end);
+
+            charRange = rangy.createRange();
+            charRange.selectCharacters(sandbox, start, end);
+            greenApply.applyToRange(charRange, {
+                normalize: false
+            });
+        }
+
+        function getSentenceRanges() {
+            sandbox = document.getElementById("sandbox");
+            wholeRange = rangy.createRange();
+            wholeRange.selectNode(document.getElementById("sandbox"));
+            text = wholeRange.text();
+            console.log(text);
+
+            ranges = [];
+
+            for (var i = 0; i < text.length; i += 50) {
+                ranges.push([i, i + 50])
+            }
+            return ranges;
+        }
+
+         //magic! just like lightbox. 
+        initialize();
+    </script>
+</body>
+
+</html>
