@@ -175,6 +175,13 @@ function DraftOutlineBulletPoint(node)
 		// var tag = '<tag style="background-color:' + color + ';"">';
 		// var endTag = '</tag>';
 		// this.node.span.innerHTML = tag + this.node.span.innerHTML + endTag;
+
+		var greenApply = rangy.createCssClassApplier("green");
+		var range = rangy.createRange();
+
+		range.selectNode(this.node.span);
+		// range.selectCharacters(hello, 0, 10);
+		greenApply.applyToRange(range);
 	}
 
 	this.markCheckbox = function(marked)
