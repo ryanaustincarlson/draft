@@ -34,6 +34,10 @@
 	min-height: 80%;
 }
 
-#analyze-button, #fillin-button {
+#analyze-button, #clear-button {
 	float:right;
+}
+
+#fillin-button {
+	float: left;
 }
