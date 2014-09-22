@@ -3,6 +3,10 @@ $(function(){
     $("#tree").fancytree({
       extensions: ["glyph", "edit", "dnd"],
       checkbox: true,
+      // select: function(event, data)
+      // {
+      //   console.log(data.node);
+      // },
       selectMode: 2,
       icons: false,
       tabbable: true,
@@ -35,7 +39,7 @@ $(function(){
       {title: "Here's the second point, which is also really important!", key: "2"}, //expanded:true, children: [
       {title: "And look, a third point!", key: "3"},
       {title: "The fourth point is the very best.", key: "4"}, //expanded:true, children: [
-        {title: "Here is some totally random text.", key: "5"},
+      {title: "Here is some totally random text.", key: "5"},
       // ]},
       // ]}
       ],
@@ -97,21 +101,21 @@ $(function(){
 });
 
 function expandAll()
-  {
-    $("#tree").fancytree("getRootNode").visit(function(node){
-      node.setExpanded(true);
-    });
-  }
-
-  function collapseAll()
-  {
-   $("#tree").fancytree("getRootNode").visit(function(node){
-    node.setExpanded(false);
+{
+  $("#tree").fancytree("getRootNode").visit(function(node){
+    node.setExpanded(true);
   });
- }
+}
 
- function addNode()
- {
+function collapseAll()
+{
+ $("#tree").fancytree("getRootNode").visit(function(node){
+  node.setExpanded(false);
+});
+}
+
+function addNode()
+{
   var newData = {title: ""};
 
   var tree = $("#tree").fancytree("getTree");

@@ -10,6 +10,26 @@ function Editor(divID, document)
 	}
 }
 
+function DraftEditorSenctence(editor, text, start, end)
+{
+	this.editor = editor;
+	this.editorNode = editor.document.getElementById(editor.id);
+	this.text = text;
+	this.start = start;
+	this.end = end;
+	this.applier = null;
+
+	this.highlight = function(color)
+	{
+		this.applier = rangy.createCssClassApplier(color);
+		var range = rangy.createRange(this.editorNode);
+
+		// range.selectNode(this.editorNode);
+		range.selectCharacters(this.editorNode, this.start, this.end);
+		this.applier.applyToRange(range);
+	}
+}
+
 function DraftEditor(id, divID)
 {
 	this.id = id;
@@ -44,11 +64,12 @@ function DraftEditor(id, divID)
 			var letter = text[i];
 			if (letter == '.' || letter == '!' || letter == '?')
 			{
-				var sentence = {
-					text : text.substring(start, i),
-					start : start,
-					end : i
-				};
+				var sentence = new DraftEditorSenctence(this, text.substring(start, i), start, i)
+				// var sentence = {
+				// 	text : text.substring(start, i),
+				// 	start : start,
+				// 	end : i
+				// };
 				sentences.push(sentence);
 				start = i+1;
 			}
@@ -171,17 +192,11 @@ function DraftOutlineBulletPoint(node)
 	this.highlight = function(color)
 	{
 		// highlight with color
-		// console.log("highlighting (" + this.text + ") with " + color);
-		// var tag = '<tag style="background-color:' + color + ';"">';
-		// var endTag = '</tag>';
-		// this.node.span.innerHTML = tag + this.node.span.innerHTML + endTag;
-
-		var greenApply = rangy.createCssClassApplier("green");
+		var applier = rangy.createCssClassApplier(color);
 		var range = rangy.createRange();
 
 		range.selectNode(this.node.span);
-		// range.selectCharacters(hello, 0, 10);
-		greenApply.applyToRange(range);
+		applier.applyToRange(range);
 	}
 
 	this.markCheckbox = function(marked)
