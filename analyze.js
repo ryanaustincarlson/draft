@@ -26,8 +26,6 @@ function Analyzer(editor, outline)
 
 			highlighter.highlight(sentence, bullet);
 		}
-
-		// this.editor.document.getElementById(editor.id).innerHTML = highlighter.textHtml
 	}
 }
 
@@ -170,36 +168,16 @@ function Highlighter(document)
 	{
 		var color = this.getNextColor();
 
-		// console.log(sentence.text);
-		var colorize = '<tag style="background-color:' + color + ';"">';
-
 		// outline text
 		bullet.highlight(color);
-		// var bulletText = [colorize, bullet.text, '</tag>'].join('');
-		// var bulletHTML = this.document.getElementById(bullet.id);
-		// bulletHTML.innerHTML = bulletHTML.innerHTML.replace(bullet.text, bulletText);
 
-		// checkbox
+		// outline checkbox
 		bullet.markCheckbox(true);
-		// var checkbox = this.document.getElementById(bullet.checkboxID)
-		// checkbox.checked = true;
 
 		// essay text
 		sentence.highlight(color);
-
-		// var beforeLength = this.textHtml.length;
-
-		// var beforeSlice = this.textHtml.slice(0, sentence.start + this.offset);
-		// var middleSlice = this.textHtml.slice(sentence.start + this.offset, sentence.end + this.offset);
-		// var endSlice = this.textHtml.slice(sentence.end + this.offset);
-
-		// this.textHtml = [beforeSlice, colorize, middleSlice, '</tag>', endSlice].join('');
-		// // console.log(">>textHTML: " + this.textHtml);
-
-		// this.offset += this.textHtml.length - beforeLength;
 	}
 
-	// this.colors = ['#33CCFF', '#66FF00', '#33FF99', '#CC6699', '#0066FF']
 	this.colors = ['darkSeaGreen','cornflowerBlue','chartreuse','orange','red','purple'];
 	this.currentColorIdx = 0;
 	this.getNextColor = function()
@@ -221,7 +199,7 @@ function MatchSorter(matcher)
 			for (var bulletIdx = 0; bulletIdx < bullets.length; bulletIdx++)
 			{
 				var bullet = bullets[bulletIdx];
-				// if (sentence.text == bullet.text)
+
 				var match = this.matcher.matches(sentence.text, bullet.text);
 				// console.log("sentence: " + sentence.text + ", bullet: " + bullet.text + ", match: " + match)
 				if (match > 0) // FIXME: .6 or something
