@@ -72,8 +72,9 @@ Draft
 </div>
 
 <div class="editor" id="editor" >
-	<input id="analyze-button" type="button" value="Analyze" onclick="analyze()">
-	<input id="fillin-button" type="button" value="Fill In" onclick="fillin()">
+	<input id="analyze-button" type="button" value="Analyze" onclick="analyze()" >
+	<input id="clear-button" type="button" value="Clear Highlights" onclick="clearHighlights()" >
+	<input id="fillin-button" type="button" value="Fill In" onclick="fillin()" >
 	<h2>Essay</h2>
 	<!-- <textarea id="draft-text" ></textarea> -->
 </div>
@@ -101,25 +102,16 @@ Draft
 		});
 	});
 
-	// outline.prepareForProcessing();
-
-	// document.getElementById("draft-outline").addEventListener("keydown", 
-	// 		function (e)
-	// 		{
-	// 			console.log("keydown");
-	// 			if (e.keyCode == 13)
-	// 			{
-	// 				setTimeout( function() {
-	// 					alert("add checkboxes");
-	// 					outline.addCheckboxes();
-	// 				}, 1);
-	// 			}
-	// 		}, false);
-
 	function analyze()
 	{
 		analyzer.analyze()
 	}
+
+	function clearHighlights()
+	{
+		analyzer.clearHighlights();
+	}
+
 	// console.log("editor: " + editor.html())
 	// console.log("outline: " + outline.html())
 </script>
