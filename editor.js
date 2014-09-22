@@ -18,15 +18,24 @@ function DraftEditorSenctence(editor, text, start, end)
 	this.start = start;
 	this.end = end;
 	this.applier = null;
+	this.range = null;
 
 	this.highlight = function(color)
 	{
 		this.applier = rangy.createCssClassApplier(color);
-		var range = rangy.createRange(this.editorNode);
 
-		// range.selectNode(this.editorNode);
-		range.selectCharacters(this.editorNode, this.start, this.end);
-		this.applier.applyToRange(range);
+		this.range = rangy.createRange(this.editorNode);
+
+		this.range.selectCharacters(this.editorNode, this.start, this.end);
+		this.applier.applyToRange(this.range);
+	}
+
+	this.clearHighlights = function()
+	{
+		if (this.range)
+		{
+			this.applier.undoToRange(this.range);
+		}
 	}
 }
 
@@ -189,14 +198,26 @@ function DraftOutlineBulletPoint(node)
 {
 	this.node = node;
 	this.text = node.title;
+
+	this.applier = null;
+	this.range = null;
+
 	this.highlight = function(color)
 	{
 		// highlight with color
-		var applier = rangy.createCssClassApplier(color);
-		var range = rangy.createRange();
+		this.applier = rangy.createCssClassApplier(color);
+		this.range = rangy.createRange();
 
-		range.selectNode(this.node.span);
-		applier.applyToRange(range);
+		this.range.selectNode(this.node.span);
+		this.applier.applyToRange(this.range);
+	}
+
+	this.clearHighlights = function()
+	{
+		if (this.range)
+		{
+			this.applier.undoToRange(this.range);
+		}
 	}
 
 	this.markCheckbox = function(marked)

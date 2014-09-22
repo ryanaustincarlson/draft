@@ -7,24 +7,49 @@ function Analyzer(editor, outline)
 	this.matcher = new CosineMatcher();
 	this.sorter = new MatchSorter(this.matcher);
 
+	this.matches = null;
+	this.sentences = null;
+	this.bullets = null;
+
 	this.analyze = function()
 	{
-		var sentences = editor.prepareForProcessing();
-		var bullets = outline.prepareForProcessing();
+		this.sentences = editor.prepareForProcessing();
+		this.bullets = outline.prepareForProcessing();
 
-		var matches = this.sorter.sort(sentences, bullets);
+		this.matches = this.sorter.sort(this.sentences, this.bullets);
 
 		var highlighter = new Highlighter(this.editor.document);
 
-		for (var i=0; i<matches.length; i++)
+		for (var i=0; i<this.matches.length; i++)
 		{
-			var sentenceIdx = matches[i]['sentenceIdx'];
-			var bulletIdx = matches[i]['bulletIdx'];
+			var sentenceIdx = this.matches[i]['sentenceIdx'];
+			var bulletIdx = this.matches[i]['bulletIdx'];
 
-			var sentence = sentences[sentenceIdx];
-			var bullet = bullets[bulletIdx];
+			var sentence = this.sentences[sentenceIdx];
+			var bullet = this.bullets[bulletIdx];
 
 			highlighter.highlight(sentence, bullet);
+		}
+	}
+
+	this.clearHighlights = function()
+	{
+		if (!this.matches)
+		{
+			return;
+		}
+
+		var highlighter = new Highlighter(this.editor.document);
+		
+		for (var i=0; i<this.matches.length; i++)
+		{
+			var sentenceIdx = this.matches[i]['sentenceIdx'];
+			var bulletIdx = this.matches[i]['bulletIdx'];
+
+			var sentence = this.sentences[sentenceIdx];
+			var bullet = this.bullets[bulletIdx];
+
+			highlighter.clearHighlights(sentence, bullet);
 		}
 	}
 }
@@ -161,7 +186,6 @@ function Highlighter(document)
 {
 	this.document = document;
 
-	this.textHtml = this.document.getElementById(editor.id).textContent;
 	this.offset = 0;
 
 	this.highlight = function(sentence, bullet)
@@ -176,6 +200,12 @@ function Highlighter(document)
 
 		// essay text
 		sentence.highlight(color);
+	}
+
+	this.clearHighlights = function(sentence, bullet)
+	{
+		sentence.clearHighlights();
+		bullet.clearHighlights();
 	}
 
 	this.colors = ['darkSeaGreen','cornflowerBlue','chartreuse','orange','red','purple'];
