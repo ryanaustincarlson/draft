@@ -217,13 +217,14 @@ function DraftOutlineBulletPoint(node)
 		if (this.range)
 		{
 			this.applier.undoToRange(this.range);
+			this.markCheckbox(false);
 		}
 	}
 
 	this.markCheckbox = function(marked)
 	{
 		// console.log("marking checkbox (" + this.text + ") with " + marked)
-		this.node.setSelected(true);
+		this.node.setSelected(marked);
 	}
 }
 
