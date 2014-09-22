@@ -35,14 +35,23 @@ Draft
 <script src="fancytree.js" type="text/javascript"> </script>
 
 <style type="text/css">
-		*.blue {
-			background-color: #0bf;
+		*.darkSeaGreen {
+			background-color: darkSeaGreen;
 		}
-		*.green {
-			background-color: #0f5;
+		*.cornflowerBlue {
+			background-color: cornflowerBlue;
+		}
+		*.chartreuse {
+			background-color: chartreuse;
+		}
+		*.red {
+			background-color: red;
 		}
 		*.orange {
-			background-color: #fb0;
+			background-color: orange;
+		}
+		*.purple {
+			background-color: purple;
 		}
 	</style>
 
@@ -83,9 +92,15 @@ Draft
 	editor.initialize();
 	outline.initialize();
 
-	$(function() {
-		var bullets = outline.prepareForProcessing();
+	var analyzer = new Analyzer(editor, outline);
+
+	$(window).load(function() {
+		$("#tree").fancytree("option", "select", function(event, data)
+		{
+			console.log(data.node);
+		});
 	});
+
 	// outline.prepareForProcessing();
 
 	// document.getElementById("draft-outline").addEventListener("keydown", 
@@ -103,8 +118,6 @@ Draft
 
 	function analyze()
 	{
-		var analyzer = new Analyzer(editor, outline);
-		
 		analyzer.analyze()
 	}
 	// console.log("editor: " + editor.html())

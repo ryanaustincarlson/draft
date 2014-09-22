@@ -27,10 +27,9 @@ function Analyzer(editor, outline)
 			highlighter.highlight(sentence, bullet);
 		}
 
-		this.editor.document.getElementById(editor.id).innerHTML = highlighter.textHtml
+		// this.editor.document.getElementById(editor.id).innerHTML = highlighter.textHtml
 	}
 }
-
 
 function Matcher()
 {
@@ -169,11 +168,13 @@ function Highlighter(document)
 
 	this.highlight = function(sentence, bullet)
 	{
+		var color = this.getNextColor();
+
 		// console.log(sentence.text);
-		var colorize = '<tag style="background-color:' + this.getNextColor() + ';"">';
+		var colorize = '<tag style="background-color:' + color + ';"">';
 
 		// outline text
-		bullet.highlight(this.getNextColor());
+		bullet.highlight(color);
 		// var bulletText = [colorize, bullet.text, '</tag>'].join('');
 		// var bulletHTML = this.document.getElementById(bullet.id);
 		// bulletHTML.innerHTML = bulletHTML.innerHTML.replace(bullet.text, bulletText);
@@ -184,19 +185,22 @@ function Highlighter(document)
 		// checkbox.checked = true;
 
 		// essay text
-		var beforeLength = this.textHtml.length;
+		sentence.highlight(color);
 
-		var beforeSlice = this.textHtml.slice(0, sentence.start + this.offset);
-		var middleSlice = this.textHtml.slice(sentence.start + this.offset, sentence.end + this.offset);
-		var endSlice = this.textHtml.slice(sentence.end + this.offset);
+		// var beforeLength = this.textHtml.length;
 
-		this.textHtml = [beforeSlice, colorize, middleSlice, '</tag>', endSlice].join('');
-		// console.log(">>textHTML: " + this.textHtml);
+		// var beforeSlice = this.textHtml.slice(0, sentence.start + this.offset);
+		// var middleSlice = this.textHtml.slice(sentence.start + this.offset, sentence.end + this.offset);
+		// var endSlice = this.textHtml.slice(sentence.end + this.offset);
 
-		this.offset += this.textHtml.length - beforeLength;
+		// this.textHtml = [beforeSlice, colorize, middleSlice, '</tag>', endSlice].join('');
+		// // console.log(">>textHTML: " + this.textHtml);
+
+		// this.offset += this.textHtml.length - beforeLength;
 	}
 
-	this.colors = ['#33CCFF', '#66FF00', '#33FF99', '#CC6699', '#0066FF']
+	// this.colors = ['#33CCFF', '#66FF00', '#33FF99', '#CC6699', '#0066FF']
+	this.colors = ['darkSeaGreen','cornflowerBlue','chartreuse','orange','red','purple'];
 	this.currentColorIdx = 0;
 	this.getNextColor = function()
 	{
