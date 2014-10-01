@@ -22,11 +22,8 @@ function Analyzer(editor, outline)
 
 		for (var i=0; i<this.matches.length; i++)
 		{
-			var sentenceIdx = this.matches[i]['sentenceIdx'];
-			var bulletIdx = this.matches[i]['bulletIdx'];
-
-			var sentence = this.sentences[sentenceIdx];
-			var bullet = this.bullets[bulletIdx];
+			var sentence = this.matches[i]['sentence'];
+			var bullet = this.matches[i]['bullet'];
 
 			this.highlighter.highlight(sentence, bullet);
 		}
@@ -43,11 +40,8 @@ function Analyzer(editor, outline)
 		
 		for (var i=0; i<this.matches.length; i++)
 		{
-			var sentenceIdx = this.matches[i]['sentenceIdx'];
-			var bulletIdx = this.matches[i]['bulletIdx'];
-
-			var sentence = this.sentences[sentenceIdx];
-			var bullet = this.bullets[bulletIdx];
+			var sentence = this.matches[i]['sentence'];
+			var bullet = this.matches[i]['bullet'];
 
 			highlighter.clearHighlights(sentence, bullet);
 		}
@@ -212,7 +206,8 @@ function Highlighter(document)
 	this.currentColorIdx = 0;
 	this.getNextColor = function()
 	{
-		return this.colors[this.currentColorIdx++];
+		this.currentColorIdx = (this.currentColorIdx + 1) % this.colors.length;
+		return this.colors[this.currentColorIdx];
 	}
 }
 
@@ -220,9 +215,13 @@ function MatchSorter(matcher)
 {
 	this.matcher = matcher;
 
-	this.sort = function(sentences, bullets)
+	this.sort = function(sentences, bullets, matches)
 	{
-		var matches = []
+		if (!matches)
+		{
+			var matches = []
+		}
+		
 		for (var sentenceIdx = 0; sentenceIdx < sentences.length; sentenceIdx++)
 		{
 			var sentence = sentences[sentenceIdx];
@@ -233,16 +232,19 @@ function MatchSorter(matcher)
 				var match = this.matcher.matches(sentence.text, bullet.text);
 				// console.log("sentence: " + sentence.text + ", bullet: " + bullet.text + ", match: " + match)
 				if (match > 0) // FIXME: .6 or something
-				// if (this.matcher.matches(sentence.text, bullet.text) > .9)
 				{
 					// implement the var matches thing
-
-					// highlighter.highlight(sentence, bullet);
 					matches.push({
 						'match' : match,
-						'sentenceIdx' : sentenceIdx,
-						'bulletIdx' : bulletIdx
+						'sentence' : sentence,
+						'bullet' : bullet
 					});
+
+					// matches.push({
+					// 	'match' : match,
+					// 	'sentenceIdx' : sentenceIdx,
+					// 	'bulletIdx' : bulletIdx
+					// });
 				}
 			}
 		}
@@ -260,12 +262,37 @@ function MatchSorter(matcher)
 			var bulletIdx = matches[i]['bulletIdx'];
 			var sentenceIdx = matches[i]['sentenceIdx'];
 
+			var bullet = matches[i]['bullet'];
+			var sentence = matches[i]['sentence'];
+
+			var alreadyUsed = false;
+			for (var usedBulletIdx=0; usedBulletIdx<usedBullets.length; usedBulletIdx++)
+			{
+				if (usedBullets[usedBulletIdx].equals(bullet))
+				{
+					alreadyUsed = true;
+					break;
+				}
+			}
+			if (!alreadyUsed)
+			{
+				for (var usedSentenceIdx=0; usedSentenceIdx<usedSentences.length; usedSentenceIdx++)
+				{
+					if (usedSentences[usedSentenceIdx].equals(sentence))
+					{
+						alreadyUsed = true;
+						break;
+					}
+				}
+			}
+
 			// if we haven't claimed this bullet index and sentence index yet
-			if (usedBullets.indexOf(bulletIdx) == -1 && usedSentences.indexOf(sentenceIdx) == -1)
+			// if (usedBullets.indexOf(bulletIdx) == -1 && usedSentences.indexOf(sentenceIdx) == -1)
+			if (!alreadyUsed)
 			{
 				culledMatches.push(matches[i]);
-				usedBullets.push(bulletIdx);
-				usedSentences.push(sentenceIdx);
+				usedBullets.push(bullet);
+				usedSentences.push(sentence);
 			}
 		}
 
@@ -276,7 +303,7 @@ function MatchSorter(matcher)
 		}
 
 		culledMatches.sort(function(a, b) {
-			return a['sentenceIdx'] - b['sentenceIdx']
+			return a['sentence'].start - b['sentence'].start
 		})				
 
 		console.log("culled matches...");
