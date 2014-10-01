@@ -10,7 +10,7 @@ function Editor(divID, document)
 	}
 }
 
-function DraftEditorSenctence(editor, text, start, end)
+function DraftEditorSentence(editor, text, start, end)
 {
 	this.editor = editor;
 	this.editorNode = editor.document.getElementById(editor.id);
@@ -73,7 +73,7 @@ function DraftEditor(id, divID)
 			var letter = text[i];
 			if (letter == '.' || letter == '!' || letter == '?')
 			{
-				var sentence = new DraftEditorSenctence(this, text.substring(start, i), start, i)
+				var sentence = new DraftEditorSentence(this, text.substring(start, i), start, i)
 				// var sentence = {
 				// 	text : text.substring(start, i),
 				// 	start : start,
