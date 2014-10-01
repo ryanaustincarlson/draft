@@ -76,6 +76,7 @@ Draft
 	<input id="analyze-button" type="button" value="Analyze" onclick="analyze()" >
 	<input id="clear-button" type="button" value="Clear Highlights" onclick="clearHighlights()" >
 	
+	<input id="manual-highlight" type="button" value="Manual Highlight" onclick="manualHighlight()" disabled >
 	<input id="fillin-button" type="button" value="Fill In" onclick="fillin()" >
 	<br>
 	<h2>Essay</h2>
@@ -97,11 +98,18 @@ Draft
 	outline.initialize();
 
 	var analyzer = new Analyzer(editor, outline);
+	var selectedNode = null;
 
 	$(window).load(function() {
 		$("#tree").fancytree("option", "select", function(event, data)
 		{
-			console.log(data.node);
+			if (data.node.isSelected())
+			{
+				selectedNode = data.node;
+
+				var manualHighlightButton = document.getElementById("manual-highlight");
+				manualHighlightButton.disabled = false;
+			}
 		});
 	});
 
@@ -113,6 +121,42 @@ Draft
 	function clearHighlights()
 	{
 		analyzer.clearHighlights();
+	}
+
+	function manualHighlight()
+	{
+		var editorNode = document.getElementById(editor.id);
+		var editorText = editorNode.innerText;
+
+		// var range = rangy.createRange(editorNode);
+		var selection = rangy.getSelection();
+		console.log("selected: " + selection);
+		if (selection.rangeCount == 1 && !!selectedNode)
+		{
+			var selectionRange = selection.getRangeAt(0);
+
+			var containerText = selectionRange.startContainer.data;
+			var containerOffset = editorText.indexOf(containerText);
+
+			if (containerOffset >= 0)
+			{
+				var sentence = new DraftEditorSentence(
+					editor, 
+					selection.text(), 
+					selectionRange.startOffset+containerOffset,
+					selectionRange.endOffset+containerOffset);
+				var bullet = new DraftOutlineBulletPoint(selectedNode);
+
+				analyzer.highlighter.highlight(sentence, bullet);
+			}
+		}
+		else
+		{
+			// un-select a node
+		}
+
+		var manualHighlightButton = document.getElementById("manual-highlight");
+		manualHighlightButton.disabled = true;
 	}
 
 	// console.log("editor: " + editor.html())

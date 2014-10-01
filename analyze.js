@@ -11,14 +11,14 @@ function Analyzer(editor, outline)
 	this.sentences = null;
 	this.bullets = null;
 
+	this.highlighter = new Highlighter(this.editor.document);
+
 	this.analyze = function()
 	{
 		this.sentences = editor.prepareForProcessing();
 		this.bullets = outline.prepareForProcessing();
 
 		this.matches = this.sorter.sort(this.sentences, this.bullets);
-
-		var highlighter = new Highlighter(this.editor.document);
 
 		for (var i=0; i<this.matches.length; i++)
 		{
@@ -28,7 +28,7 @@ function Analyzer(editor, outline)
 			var sentence = this.sentences[sentenceIdx];
 			var bullet = this.bullets[bulletIdx];
 
-			highlighter.highlight(sentence, bullet);
+			this.highlighter.highlight(sentence, bullet);
 		}
 	}
 
