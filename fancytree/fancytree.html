@@ -64,6 +64,13 @@ class="skinswitcher">
       {title: "Node 2.3", key: "5"},
       ]}
       ],
+
+      select: function(event, data)
+      {
+        var node = data.node;
+        console.log(data.node.title);
+      },
+
       edit: {
         // Available options with their default:
         adjustWidthOfs: 4,   // null: don't adjust input size to content
