@@ -117,6 +117,26 @@ Draft
 				var manualHighlightButton = document.getElementById("manual-highlight");
 				manualHighlightButton.disabled = false;
 			}
+			else
+			{
+				var matches = analyzer.matches;
+				if (!!matches)
+				{
+					for (var i=0; i<matches.length; i++)
+					{
+						var bullet = matches[i].bullet;
+						if (bullet.node == data.node)
+						{
+							bullet.clearHighlights();
+							matches[i].sentence.clearHighlights();
+
+							matches.splice(i, 1);
+
+							break;
+						}
+					}
+				}
+			}
 		});
 	});
 
