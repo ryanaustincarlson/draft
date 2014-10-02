@@ -212,7 +212,7 @@ function Highlighter(document)
 		bullet.clearHighlights();
 	}
 
-	this.colors = ['darkSeaGreen','cornflowerBlue','chartreuse','orange','red','purple'];
+	this.colors = ['darkSeaGreen','cornflowerBlue','chartreuse','orange','red','lightSlateBlue'];
 	this.currentColorIdx = 0;
 	this.getNextColor = function()
 	{
