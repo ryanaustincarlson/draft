@@ -15,6 +15,8 @@ function Analyzer(editor, outline)
 
 	this.analyze = function()
 	{
+		this.disableCheckboxListeners();
+
 		this.sentences = editor.prepareForProcessing();
 		this.bullets = outline.prepareForProcessing();
 
@@ -30,10 +32,13 @@ function Analyzer(editor, outline)
 
 		this.matches = this.matches.concat(autoMatches);
 
+		this.setupCheckboxListeners();
 	}
 
 	this.clearHighlights = function()
 	{
+		this.disableCheckboxListeners();
+
 		if (!this.matches)
 		{
 			return;
@@ -50,11 +55,52 @@ function Analyzer(editor, outline)
 		}
 
 		this.matches = [];
+
+		this.setupCheckboxListeners();
 	}
 
 	this.addMatch = function(sentence, bullet)
 	{
 		this.matches.push(new Match(1, sentence, bullet));
+	}
+
+	this.setupCheckboxListeners = function()
+	{
+		$("#tree").fancytree("option", "select", function(event, data)
+		{
+			if (data.node.isSelected())
+			{
+				selectedNode = data.node;
+
+				var manualHighlightButton = document.getElementById("manual-highlight");
+				manualHighlightButton.disabled = false;
+			}
+			else
+			{
+				var matches = analyzer.matches;
+				if (!!matches)
+				{
+					for (var i=0; i<matches.length; i++)
+					{
+						var bullet = matches[i].bullet;
+						if (bullet.node == data.node)
+						{
+							bullet.clearHighlights();
+							matches[i].sentence.clearHighlights();
+
+							matches.splice(i, 1);
+
+							break;
+						}
+					}
+				}
+			}
+		});
+	}
+
+	this.disableCheckboxListeners = function()
+	{
+		$("#tree").fancytree("option", "select", function(event, data) {});
 	}
 }
 
