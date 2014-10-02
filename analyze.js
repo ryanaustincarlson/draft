@@ -283,13 +283,25 @@ function MatchSorter(matcher)
 			return false;
 		}
 
+		var containsWithOverlap = function(list, item)
+		{
+			for (var idx=0; idx<list.length; idx++)
+			{
+				if (list[idx].overlaps(item))
+				{
+					return true;
+				}
+			}
+			return false;
+		}
+
 		for (var i=0; i<matches.length; i++)
 		{
 			var bullet = matches[i].bullet;
 			var sentence = matches[i].sentence;
 
 			var alreadyUsed = containsWithEqual(usedBullets, bullet) || 
-							  containsWithEqual(usedSentences, sentence)
+							  containsWithOverlap(usedSentences, sentence)
 
 			// if we haven't claimed this bullet index and sentence index yet
 			// if (usedBullets.indexOf(bulletIdx) == -1 && usedSentences.indexOf(sentenceIdx) == -1)

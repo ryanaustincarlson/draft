@@ -42,6 +42,11 @@ function DraftEditorSentence(editor, text, start, end)
 	{
 		return this.text == other.text && this.start == other.start && this.end == other.end;
 	}
+
+	this.overlaps = function(other)
+	{
+		return this.start <= other.end && other.start <= this.end;
+	}
 }
 
 function DraftEditor(id, divID)
