@@ -7,7 +7,7 @@ function Analyzer(editor, outline)
 	this.matcher = new CosineMatcher();
 	this.sorter = new MatchSorter(this.matcher);
 
-	this.matches = null;
+	this.matches = [];
 	this.sentences = null;
 	this.bullets = null;
 
@@ -18,18 +18,18 @@ function Analyzer(editor, outline)
 		this.sentences = editor.prepareForProcessing();
 		this.bullets = outline.prepareForProcessing();
 
-		this.matches = this.sorter.sort(this.sentences, this.bullets);
+		var autoMatches = this.sorter.sort(this.sentences, this.bullets, this.matches);
 
-		for (var i=0; i<this.matches.length; i++)
+		for (var i=0; i<autoMatches.length; i++)
 		{
-			var sentenceIdx = this.matches[i]['sentenceIdx'];
-			var bulletIdx = this.matches[i]['bulletIdx'];
-
-			var sentence = this.sentences[sentenceIdx];
-			var bullet = this.bullets[bulletIdx];
+			var sentence = autoMatches[i].sentence;
+			var bullet = autoMatches[i].bullet;
 
 			this.highlighter.highlight(sentence, bullet);
 		}
+
+		this.matches = this.matches.concat(autoMatches);
+
 	}
 
 	this.clearHighlights = function()
@@ -43,14 +43,18 @@ function Analyzer(editor, outline)
 		
 		for (var i=0; i<this.matches.length; i++)
 		{
-			var sentenceIdx = this.matches[i]['sentenceIdx'];
-			var bulletIdx = this.matches[i]['bulletIdx'];
-
-			var sentence = this.sentences[sentenceIdx];
-			var bullet = this.bullets[bulletIdx];
+			var sentence = this.matches[i].sentence;
+			var bullet = this.matches[i].bullet;
 
 			highlighter.clearHighlights(sentence, bullet);
 		}
+
+		this.matches = [];
+	}
+
+	this.addMatch = function(sentence, bullet)
+	{
+		this.matches.push(new Match(1, sentence, bullet));
 	}
 }
 
@@ -212,17 +216,39 @@ function Highlighter(document)
 	this.currentColorIdx = 0;
 	this.getNextColor = function()
 	{
-		return this.colors[this.currentColorIdx++];
+		this.currentColorIdx = (this.currentColorIdx + 1) % this.colors.length;
+		return this.colors[this.currentColorIdx];
 	}
+}
+
+function Match(score, sentence, bullet)
+{
+	this.score = score;
+	this.sentence = sentence;
+	this.bullet = bullet;
 }
 
 function MatchSorter(matcher)
 {
 	this.matcher = matcher;
 
-	this.sort = function(sentences, bullets)
+	this.sort = function(sentences, bullets, existingMatches)
 	{
-		var matches = []
+		var usedBullets = []
+		var usedSentences = []
+
+		if (!!existingMatches)
+		{
+			for (var matchIdx = 0; matchIdx < existingMatches.length; matchIdx++)
+			{
+				var bullet = existingMatches[matchIdx].bullet;
+				var sentence = existingMatches[matchIdx].sentence;
+				usedBullets.push(bullet)
+				usedSentences.push(sentence)
+			}
+		}
+		
+		var matches = [];
 		for (var sentenceIdx = 0; sentenceIdx < sentences.length; sentenceIdx++)
 		{
 			var sentence = sentences[sentenceIdx];
@@ -230,42 +256,60 @@ function MatchSorter(matcher)
 			{
 				var bullet = bullets[bulletIdx];
 
-				var match = this.matcher.matches(sentence.text, bullet.text);
-				// console.log("sentence: " + sentence.text + ", bullet: " + bullet.text + ", match: " + match)
-				if (match > 0) // FIXME: .6 or something
-				// if (this.matcher.matches(sentence.text, bullet.text) > .9)
+				var score = this.matcher.matches(sentence.text, bullet.text);
+				if (score > .25) // FIXME: .6 or something
 				{
 					// implement the var matches thing
-
-					// highlighter.highlight(sentence, bullet);
-					matches.push({
-						'match' : match,
-						'sentenceIdx' : sentenceIdx,
-						'bulletIdx' : bulletIdx
-					});
+					matches.push(new Match(score, sentence, bullet))
 				}
 			}
 		}
 
 		matches.sort(function(a, b) {
-			return b['match'] - a['match'];
+			return b.score - a.score;
 		})
 
-		var usedBullets = []
-		var usedSentences = []
 		var culledMatches = []
+
+		var containsWithEqual = function(list, item)
+		{
+			for (var idx=0; idx<list.length; idx++)
+			{
+				if (list[idx].equals(item))
+				{
+					return true;
+				}
+			}
+			return false;
+		}
+
+		var containsWithOverlap = function(list, item)
+		{
+			for (var idx=0; idx<list.length; idx++)
+			{
+				if (list[idx].overlaps(item))
+				{
+					return true;
+				}
+			}
+			return false;
+		}
 
 		for (var i=0; i<matches.length; i++)
 		{
-			var bulletIdx = matches[i]['bulletIdx'];
-			var sentenceIdx = matches[i]['sentenceIdx'];
+			var bullet = matches[i].bullet;
+			var sentence = matches[i].sentence;
+
+			var alreadyUsed = containsWithEqual(usedBullets, bullet) || 
+							  containsWithOverlap(usedSentences, sentence)
 
 			// if we haven't claimed this bullet index and sentence index yet
-			if (usedBullets.indexOf(bulletIdx) == -1 && usedSentences.indexOf(sentenceIdx) == -1)
+			// if (usedBullets.indexOf(bulletIdx) == -1 && usedSentences.indexOf(sentenceIdx) == -1)
+			if (!alreadyUsed)
 			{
 				culledMatches.push(matches[i]);
-				usedBullets.push(bulletIdx);
-				usedSentences.push(sentenceIdx);
+				usedBullets.push(bullet);
+				usedSentences.push(sentence);
 			}
 		}
 
@@ -276,7 +320,7 @@ function MatchSorter(matcher)
 		}
 
 		culledMatches.sort(function(a, b) {
-			return a['sentenceIdx'] - b['sentenceIdx']
+			return a.sentence.start - b.sentence.start
 		})				
 
 		console.log("culled matches...");

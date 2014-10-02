@@ -37,6 +37,16 @@ function DraftEditorSentence(editor, text, start, end)
 			this.applier.undoToRange(this.range);
 		}
 	}
+
+	this.equals = function(other)
+	{
+		return this.text == other.text && this.start == other.start && this.end == other.end;
+	}
+
+	this.overlaps = function(other)
+	{
+		return this.start <= other.end && other.start <= this.end;
+	}
 }
 
 function DraftEditor(id, divID)
@@ -226,6 +236,11 @@ function DraftOutlineBulletPoint(node)
 		// console.log("marking checkbox (" + this.text + ") with " + marked)
 		this.node.setSelected(marked);
 	}
+
+	this.equals = function(other)
+	{
+		return this.node == other.node && this.text == other.text;
+	}
 }
 
 function DraftTreeOutlineEditor(id, divID)
@@ -242,8 +257,6 @@ function DraftTreeOutlineEditor(id, divID)
 
 	this.prepareForProcessing = function()
 	{
-		console.log("prapre for processing");
-
 		var flattenTree = function(node)
 		{
 			var fullList = node.isRoot() ? [] : [node];

@@ -148,6 +148,8 @@ Draft
 				var bullet = new DraftOutlineBulletPoint(selectedNode);
 
 				analyzer.highlighter.highlight(sentence, bullet);
+
+				analyzer.addMatch(sentence, bullet);
 			}
 		}
 		else
@@ -191,7 +193,7 @@ Draft
 		// outline.addCheckboxes()
 
 		var essay = document.getElementById("draft-text");
-		essay.innerHTML += "I present the first point of the essay. My second point is really important, too. The fourth is the best point. But look, found my third point!"
+		essay.innerHTML += "I present the first point of the essay. My second point is really important, too. This be completely unrelated. The fourth is the best point. But look, found my third point!"
 	}
 </script>
 
