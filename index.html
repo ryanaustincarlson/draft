@@ -169,31 +169,16 @@ Draft
 	// seed with some existing stuff
 	function fillin()
 	{
-		// var list = document.getElementById("outline-ul");
-		// // console.log(list.children)
-
-		// var listItem = list.children[0];
-		// listItem.innerHTML += "This is the first point of the essay.";
-
-		// listItem = outline.createListItem();
-		// listItem.innerHTML += "Here's the second point, which is also really important!"
-		// // console.log(listItem);
-		// list.appendChild(listItem);
-
-		// listItem = outline.createListItem();
-		// listItem.innerHTML += "And look, a third point!"
-		// // console.log(listItem);
-		// list.appendChild(listItem);
-
-		// listItem = outline.createListItem();
-		// listItem.innerHTML += "The fourth point is the very best."
-		// // console.log(listItem);
-		// list.appendChild(listItem);
-
-		// outline.addCheckboxes()
+		$("#tree").fancytree("option", "source", [
+			{title: "This is the first point of the essay.", key: "1"},
+      		{title: "Here's the second point, which is also really important!", key: "2"}, //expanded:true, children: [
+      		{title: "And look, a third point!", key: "3"},
+      		{title: "The fourth point is the very best.", key: "4"}, //expanded:true, children: [
+      		{title: "Here is some totally random text.", key: "5"},
+      	]);
 
 		var essay = document.getElementById("draft-text");
-		essay.innerHTML += "I present the first point of the essay. My second point is really important, too. This be completely unrelated. The fourth is the best point. But look, found my third point!"
+		essay.innerHTML = "I present the first point of the essay. My second point is really important, too. This be completely unrelated. The fourth is the best point. But look, found my third point!"
 	}
 </script>
 
