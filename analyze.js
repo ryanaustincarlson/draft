@@ -7,7 +7,7 @@ function Analyzer(editor, outline)
 	this.matcher = new CosineMatcher();
 	this.sorter = new MatchSorter(this.matcher);
 
-	this.matches = null;
+	this.matches = [];
 	this.sentences = null;
 	this.bullets = null;
 
@@ -18,15 +18,18 @@ function Analyzer(editor, outline)
 		this.sentences = editor.prepareForProcessing();
 		this.bullets = outline.prepareForProcessing();
 
-		this.matches = this.sorter.sort(this.sentences, this.bullets);
+		var autoMatches = this.sorter.sort(this.sentences, this.bullets, this.matches);
 
-		for (var i=0; i<this.matches.length; i++)
+		for (var i=0; i<autoMatches.length; i++)
 		{
-			var sentence = this.matches[i]['sentence'];
-			var bullet = this.matches[i]['bullet'];
+			var sentence = autoMatches[i].sentence;
+			var bullet = autoMatches[i].bullet;
 
 			this.highlighter.highlight(sentence, bullet);
 		}
+
+		this.matches = this.matches.concat(autoMatches);
+
 	}
 
 	this.clearHighlights = function()
@@ -40,11 +43,18 @@ function Analyzer(editor, outline)
 		
 		for (var i=0; i<this.matches.length; i++)
 		{
-			var sentence = this.matches[i]['sentence'];
-			var bullet = this.matches[i]['bullet'];
+			var sentence = this.matches[i].sentence;
+			var bullet = this.matches[i].bullet;
 
 			highlighter.clearHighlights(sentence, bullet);
 		}
+
+		this.matches = [];
+	}
+
+	this.addMatch = function(sentence, bullet)
+	{
+		this.matches.push(new Match(1, sentence, bullet));
 	}
 }
 
@@ -211,17 +221,34 @@ function Highlighter(document)
 	}
 }
 
+function Match(score, sentence, bullet)
+{
+	this.score = score;
+	this.sentence = sentence;
+	this.bullet = bullet;
+}
+
 function MatchSorter(matcher)
 {
 	this.matcher = matcher;
 
-	this.sort = function(sentences, bullets, matches)
+	this.sort = function(sentences, bullets, existingMatches)
 	{
-		if (!matches)
+		var usedBullets = []
+		var usedSentences = []
+
+		if (!!existingMatches)
 		{
-			var matches = []
+			for (var matchIdx = 0; matchIdx < existingMatches.length; matchIdx++)
+			{
+				var bullet = existingMatches[matchIdx].bullet;
+				var sentence = existingMatches[matchIdx].sentence;
+				usedBullets.push(bullet)
+				usedSentences.push(sentence)
+			}
 		}
 		
+		var matches = [];
 		for (var sentenceIdx = 0; sentenceIdx < sentences.length; sentenceIdx++)
 		{
 			var sentence = sentences[sentenceIdx];
@@ -229,62 +256,40 @@ function MatchSorter(matcher)
 			{
 				var bullet = bullets[bulletIdx];
 
-				var match = this.matcher.matches(sentence.text, bullet.text);
-				// console.log("sentence: " + sentence.text + ", bullet: " + bullet.text + ", match: " + match)
-				if (match > 0) // FIXME: .6 or something
+				var score = this.matcher.matches(sentence.text, bullet.text);
+				if (score > .25) // FIXME: .6 or something
 				{
 					// implement the var matches thing
-					matches.push({
-						'match' : match,
-						'sentence' : sentence,
-						'bullet' : bullet
-					});
-
-					// matches.push({
-					// 	'match' : match,
-					// 	'sentenceIdx' : sentenceIdx,
-					// 	'bulletIdx' : bulletIdx
-					// });
+					matches.push(new Match(score, sentence, bullet))
 				}
 			}
 		}
 
 		matches.sort(function(a, b) {
-			return b['match'] - a['match'];
+			return b.score - a.score;
 		})
 
-		var usedBullets = []
-		var usedSentences = []
 		var culledMatches = []
+
+		var containsWithEqual = function(list, item)
+		{
+			for (var idx=0; idx<list.length; idx++)
+			{
+				if (list[idx].equals(item))
+				{
+					return true;
+				}
+			}
+			return false;
+		}
 
 		for (var i=0; i<matches.length; i++)
 		{
-			var bulletIdx = matches[i]['bulletIdx'];
-			var sentenceIdx = matches[i]['sentenceIdx'];
+			var bullet = matches[i].bullet;
+			var sentence = matches[i].sentence;
 
-			var bullet = matches[i]['bullet'];
-			var sentence = matches[i]['sentence'];
-
-			var alreadyUsed = false;
-			for (var usedBulletIdx=0; usedBulletIdx<usedBullets.length; usedBulletIdx++)
-			{
-				if (usedBullets[usedBulletIdx].equals(bullet))
-				{
-					alreadyUsed = true;
-					break;
-				}
-			}
-			if (!alreadyUsed)
-			{
-				for (var usedSentenceIdx=0; usedSentenceIdx<usedSentences.length; usedSentenceIdx++)
-				{
-					if (usedSentences[usedSentenceIdx].equals(sentence))
-					{
-						alreadyUsed = true;
-						break;
-					}
-				}
-			}
+			var alreadyUsed = containsWithEqual(usedBullets, bullet) || 
+							  containsWithEqual(usedSentences, sentence)
 
 			// if we haven't claimed this bullet index and sentence index yet
 			// if (usedBullets.indexOf(bulletIdx) == -1 && usedSentences.indexOf(sentenceIdx) == -1)
@@ -303,7 +308,7 @@ function MatchSorter(matcher)
 		}
 
 		culledMatches.sort(function(a, b) {
-			return a['sentence'].start - b['sentence'].start
+			return a.sentence.start - b.sentence.start
 		})				
 
 		console.log("culled matches...");

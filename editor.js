@@ -252,8 +252,6 @@ function DraftTreeOutlineEditor(id, divID)
 
 	this.prepareForProcessing = function()
 	{
-		console.log("prapre for processing");
-
 		var flattenTree = function(node)
 		{
 			var fullList = node.isRoot() ? [] : [node];
