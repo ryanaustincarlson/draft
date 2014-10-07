@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta http-equiv="content-type" content="text/html; charset=utf-8">
+	<title>Medium Example</title>
+
+	<script src="./src/medium.js"></script>
+	<link rel="stylesheet" type="text/css" href="./src/medium.css">
+	<link rel="stylesheet" type="text/css" href="./src/docs/docs.css">
+	<!-- <link rel="stylesheet" type="text/css" href="./src/docs/prism.css"> -->
+</head>
+<body>
+
+	<div class="demo-container">
+		<h4 id="rich"><a href="#rich">Rich</a></h4>
+		<!-- <div data-src="rich.js"> -->
+			<div id="article" class="article demo"></div>
+		<!-- </div> -->
+	</div>
+
+	<script>
+		new Medium({
+			element: document.getElementById('article'),
+			mode: Medium.richMode,
+			placeholder: 'Write your essay....'
+		});
+	</script>
+
+</body>
+</html>
