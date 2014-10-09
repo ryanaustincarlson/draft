@@ -1,8 +1,11 @@
 function Editor(divID, document)
 {
-	this.divID = divID;
-	this.rawText = "";
-	this.document = document;
+	if (!!divID)
+	{
+		this.divID = divID;
+		this.rawText = "";
+		this.document = document;
+	}
 
 	this.html = function()
 	{	
@@ -12,11 +15,14 @@ function Editor(divID, document)
 
 function DraftEditorSentence(editor, text, start, end)
 {
-	this.editor = editor;
-	this.editorNode = editor.document.getElementById(editor.id);
-	this.text = text;
-	this.start = start;
-	this.end = end;
+	if (!!editor)
+	{
+		this.editor = editor;
+		this.editorNode = this.editor.document.getElementById(this.editor.id);
+		this.text = text;
+		this.start = start;
+		this.end = end;
+	}
 	this.applier = null;
 	this.range = null;
 
@@ -51,9 +57,14 @@ function DraftEditorSentence(editor, text, start, end)
 
 function DraftEditor(id, divID)
 {
-	this.id = id;
-	this.divID = divID;
-	this.document = document;
+	if (!!id)
+	{
+		this.id = id;
+		this.divID = divID;
+		this.document = document;
+	}
+
+	this.sentenceClass = DraftEditorSentence;
 
 	this.initialize = function()
 	{
@@ -76,12 +87,9 @@ function DraftEditor(id, divID)
 			var letter = text[i];
 			if (letter == '.' || letter == '!' || letter == '?')
 			{
-				var sentence = new DraftEditorSentence(this, text.substring(start, i), start, i)
-				// var sentence = {
-				// 	text : text.substring(start, i),
-				// 	start : start,
-				// 	end : i
-				// };
+				// var sentence = new DraftEditorSentence(this, text.substring(start, i), start, i)
+				var sentence = new this.sentenceClass(this, text.substring(start, i), start, i)
+				
 				sentences.push(sentence);
 				start = i+1;
 			}
@@ -98,12 +106,33 @@ function DraftEditor(id, divID)
 
 DraftEditor.prototype = new Editor();
 
+function MediumDraftEditorSentence(editor, text, start, end)
+{
+	if (!!editor)
+	{
+		this.editor = editor;
+		this.editorNode = this.editor.medium.element;
+		this.text = text;
+		this.start = start;
+		this.end = end;
+		this.applier = null;
+		this.range = null;
+	}
+}
+
+MediumDraftEditorSentence.prototype = new DraftEditorSentence();
+
 function MediumDraftEditor(id, divID)
 {
-	this.id = id;
-	this.divID = divID;
-	this.document = document;
-	this.medium = null;
+	if (!!id)
+	{
+		this.id = id;
+		this.divID = divID;
+		this.document = document;
+		this.medium = null;
+
+		this.sentenceClass = MediumDraftEditorSentence;
+	}
 
 	this.initialize = function()
 	{
@@ -124,10 +153,13 @@ MediumDraftEditor.prototype = new DraftEditor();
 
 function DraftOutlineEditor(id, divID)
 {
-	this.id = id;
-	this.divID = divID;
-	this.document = document;
-	this.listItemIndex = 0;
+	if (!!id)
+	{
+		this.id = id;
+		this.divID = divID;
+		this.document = document;
+		this.listItemIndex = 0;
+	}
 
 	this.createListItem = function()
 	{
@@ -228,8 +260,11 @@ DraftOutlineEditor.prototype = new DraftEditor();
 
 function DraftOutlineBulletPoint(node)
 {
-	this.node = node;
-	this.text = node.title;
+	if (!!node)
+	{
+		this.node = node;
+		this.text = node.title;
+	}
 
 	this.applier = null;
 	this.range = null;
@@ -267,10 +302,13 @@ function DraftOutlineBulletPoint(node)
 
 function DraftTreeOutlineEditor(id, divID)
 {
-	this.id = id;
-	this.divID = divID;
-	this.document = document;
-	this.listItemIndex;
+	if (!!id)
+	{
+		this.id = id;
+		this.divID = divID;
+		this.document = document;
+		this.listItemIndex = 0;
+	}
 
 	this.initialize = function()
 	{
@@ -310,11 +348,4 @@ function DraftTreeOutlineEditor(id, divID)
 }
 
 DraftTreeOutlineEditor.prototype = new DraftEditor();
-
-
-
-
-
-
-
 

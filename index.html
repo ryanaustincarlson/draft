@@ -2,38 +2,43 @@
 
 <head>
 
-<!-- css -->
-<link rel="stylesheet" type="text/css" href="style.css" />
+	<!-- css -->
+	<link rel="stylesheet" type="text/css" href="style.css" />
 
-<title>
-Draft
-</title>
+	<title>
+		Draft
+	</title>
 
-<!-- <link rel="stylesheet" href="../wysihtml5/website/css/stylesheet.css" -->
-<script src="//ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js" type="text/javascript"></script>
-<script src="//ajax.googleapis.com/ajax/libs/jqueryui/1/jquery-ui.min.js" type="text/javascript"></script>
+	<!-- <link rel="stylesheet" href="../wysihtml5/website/css/stylesheet.css" -->
+	<script src="//ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js" type="text/javascript"></script>
+	<script src="//ajax.googleapis.com/ajax/libs/jqueryui/1/jquery-ui.min.js" type="text/javascript"></script>
 
-<link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.1.0/css/bootstrap.min.css" />
-<script src="//netdna.bootstrapcdn.com/bootstrap/3.1.0/js/bootstrap.min.js" type="text/javascript"></script>
+	<link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.1.0/css/bootstrap.min.css" />
+	<script src="//netdna.bootstrapcdn.com/bootstrap/3.1.0/js/bootstrap.min.js" type="text/javascript"></script>
 
-<link rel="stylesheet" href="./lib/ui.fancytree.css" type="text/css" class="skinswitcher">
+	<!-- <script src="//methvin.com/splitter/splitter.js" type="text/javascript"></script> -->
+	<script src="lib/splitter.js" type="text/javascript"></script>
+	<script src="lib/jquery.cookie.js" type="text/javascript"></script>
 
-<script src="lib/jquery.fancytree.js" type="text/javascript"></script>
-<script src="lib/jquery.fancytree.edit.js" type="text/javascript"></script>
-<script src="lib/jquery.fancytree.glyph.js" type="text/javascript"></script>
-<script src="lib/jquery.fancytree.dnd.js" type="text/javascript"></script>
 
-<script src="lib/rangy-core.js" type="text/javascript"></script>
-<script src="lib/rangy-textrange.js" type="text/javascript"></script>
-<script src="lib/rangy-classapplier.js" type="text/javascript"></script>
+	<link rel="stylesheet" href="./lib/ui.fancytree.css" type="text/css" class="skinswitcher">
 
-<script src="lib/medium.js" type="text/javascript"></script>
-<link rel="stylesheet" type="text/css" href="lib/medium.css" />
+	<script src="lib/jquery.fancytree.js" type="text/javascript"></script>
+	<script src="lib/jquery.fancytree.edit.js" type="text/javascript"></script>
+	<script src="lib/jquery.fancytree.glyph.js" type="text/javascript"></script>
+	<script src="lib/jquery.fancytree.dnd.js" type="text/javascript"></script>
 
-<!-- Add code to initialize the outline when the document is loaded: -->
-<script src="fancytree.js" type="text/javascript"> </script>
+	<script src="lib/rangy-core.js" type="text/javascript"></script>
+	<script src="lib/rangy-textrange.js" type="text/javascript"></script>
+	<script src="lib/rangy-classapplier.js" type="text/javascript"></script>
 
-<style type="text/css">
+	<script src="lib/medium.js" type="text/javascript"></script>
+	<link rel="stylesheet" type="text/css" href="lib/medium.css" />
+
+	<!-- Add code to initialize the outline when the document is loaded: -->
+	<script src="fancytree.js" type="text/javascript"> </script>
+
+	<style type="text/css">
 		*.darkSeaGreen {
 			background-color: darkSeaGreen;
 		}
@@ -59,96 +64,112 @@ Draft
 
 
 <body>
+	<div id="MySplitter" >
+		<div class="editor" id="outline-editor" >
+			<br>
+			<h2>Outline</h2>
+			<!-- <textarea id="draft-outline" ></textarea> -->
+			<p>
+				<button id="btnExpandAll" class="btn btn-sm btn-primary" onclick="expandAll()">Expand all</button>
+				<button id="btnCollapseAll" class="btn btn-sm btn-warning" onclick="collapseAll()">Collapse all</button>
+				<button id="btnAddNode" class="btn btn-sm btn-primary" onclick="addNode()">Add Node</button>
+				<button id="btnLeft" class="btn btn-sm btn-primary" onclick="moveLeft()">&#8592;</button>
+				<button id="btnRight" class="btn btn-sm btn-primary" onclick="moveRight()">&#8594;</button>
+			</p>
+			<div id="tree"> </div>
+		</div>
 
-<div class="editor" id="outline-editor" >
-	<br>
-	<h2>Outline</h2>
-	<!-- <textarea id="draft-outline" ></textarea> -->
-	<p>
-		<button id="btnExpandAll" class="btn btn-sm btn-primary" onclick="expandAll()">Expand all</button>
-		<button id="btnCollapseAll" class="btn btn-sm btn-warning" onclick="collapseAll()">Collapse all</button>
-		<button id="btnAddNode" class="btn btn-sm btn-primary" onclick="addNode()">Add Node</button>
-		<button id="btnLeft" class="btn btn-sm btn-primary" onclick="moveLeft()">&#8592;</button>
-		<button id="btnRight" class="btn btn-sm btn-primary" onclick="moveRight()">&#8594;</button>
-	</p>
-	<div id="tree"> </div>
-</div>
+		<div class="editor" id="editor-section" >
+			<input id="analyze-button" type="button" value="Analyze" onclick="analyze()" >
+			<input id="clear-button" type="button" value="Clear Highlights" onclick="clearHighlights()" >
 
-<div class="editor" id="editor-section" >
-	<input id="analyze-button" type="button" value="Analyze" onclick="analyze()" >
-	<input id="clear-button" type="button" value="Clear Highlights" onclick="clearHighlights()" >
-	
-	<input id="manual-highlight" type="button" value="Manual Highlight" onclick="manualHighlight()" disabled >
-	<input id="fillin-button" type="button" value="Fill In" onclick="fillin()" >
-	<br>
-	<h2>Essay</h2>
-	<div id="editor" ></div>
-	<!-- <textarea id="draft-text" ></textarea> -->
-</div>
+			<input id="manual-highlight" type="button" value="Manual Highlight" onclick="manualHighlight()" disabled >
+			<input id="fillin-button" type="button" value="Fill In" onclick="fillin()" >
+			<br>
+			<h2>Essay</h2>
+			<div id="editor" ></div>
+			<!-- <textarea id="draft-text" ></textarea> -->
+		</div>
+	</div>
 
-<script type="text/javascript" src="editor.js"></script>
-<script type="text/javascript" src="analyze.js"></script>
+	<script type="text/javascript" src="editor.js"></script>
+	<script type="text/javascript" src="analyze.js"></script>
 
-<script type="text/javascript">
-	// var editor = new WysihtmlEditor("wysihtml5-textarea", "editor");
-	// var outline = new WysihtmlOutlineEditor("wysihtml5-outline", "outline-editor");
+	<script type="text/javascript">
+		// var editor = new WysihtmlEditor("wysihtml5-textarea", "editor");
+		// var outline = new WysihtmlOutlineEditor("wysihtml5-outline", "outline-editor");
 
-	var editor = new DraftEditor("draft-text", "editor");
-	// var editor = new MediumDraftEditor("draft-text", "editor");
-	
-	var outline = new DraftTreeOutlineEditor("draft-outline", "outline-editor");
+		var editor = null;
 
-	editor.initialize();
-	outline.initialize();
+		var outline = null;
 
-	var analyzer = new Analyzer(editor, outline);
-	var selectedNode = null;
+		// editor.initialize();
+		// outline.initialize();
 
-	$(window).load(function() {
-		analyzer.setupCheckboxListeners();
-	});
+		var analyzer = null;
+		var selectedNode = null;
 
-	function analyze()
-	{
-		analyzer.analyze()
-	}
+		$(window).load(function() {
+			$("#MySplitter").splitter();
 
-	function clearHighlights()
-	{
-		analyzer.clearHighlights();
-	}
+			// editor = new DraftEditor("draft-text", "editor");
+			editor = new MediumDraftEditor("draft-text", "editor");
 
-	function manualHighlight()
-	{
-		var editorNode = document.getElementById(editor.id);
-		var editorText = editorNode.innerText;
+			outline = new DraftTreeOutlineEditor("draft-outline", "outline-editor");
 
-		// var range = rangy.createRange(editorNode);
-		var selection = rangy.getSelection();
-		console.log("selected: " + selection);
-		if (selection.rangeCount == 1 && !!selectedNode)
+			editor.initialize();
+			outline.initialize();
+
+			analyzer = new Analyzer(editor, outline);
+
+			analyzer.setupCheckboxListeners();
+		});
+
+		function analyze()
 		{
-			var selectionRange = selection.getRangeAt(0);
-
-			var containerText = selectionRange.startContainer.data;
-			var containerOffset = editorText.indexOf(containerText);
-
-			if (containerOffset >= 0)
-			{
-				var sentence = new DraftEditorSentence(
-					editor, 
-					selection.text(), 
-					selectionRange.startOffset+containerOffset,
-					selectionRange.endOffset+containerOffset);
-				var bullet = new DraftOutlineBulletPoint(selectedNode);
-
-				analyzer.highlighter.highlight(sentence, bullet);
-
-				analyzer.addMatch(sentence, bullet);
-			}
+			analyzer.analyze()
 		}
-		else
+
+		function clearHighlights()
 		{
+			analyzer.clearHighlights();
+		}
+
+		function manualHighlight()
+		{
+			var editorNode = document.getElementById(editor.id);
+			if (!editorNode) // using Medium? // TODO: get node from editor, not from lookup
+			{
+				editorNode = editor.medium.element;
+			}
+			var editorText = editorNode.innerText;
+
+			// var range = rangy.createRange(editorNode);
+			var selection = rangy.getSelection();
+			console.log("selected: " + selection);
+			if (selection.rangeCount == 1 && !!selectedNode)
+			{
+				var selectionRange = selection.getRangeAt(0);
+
+				var containerText = selectionRange.startContainer.data;
+				var containerOffset = editorText.indexOf(containerText);
+
+				if (containerOffset >= 0)
+				{
+					var sentence = new editor.sentenceClass(
+						editor, 
+						selection.text(), 
+						selectionRange.startOffset+containerOffset,
+						selectionRange.endOffset+containerOffset);
+					var bullet = new DraftOutlineBulletPoint(selectedNode);
+
+					analyzer.highlighter.highlight(sentence, bullet);
+
+					analyzer.addMatch(sentence, bullet);
+				}
+			}
+			else
+			{
 			// un-select a node
 		}
 
@@ -170,12 +191,13 @@ Draft
       		{title: "And look, a third point!", key: "3"},
       		{title: "The fourth point is the very best.", key: "4"}, //expanded:true, children: [
       		{title: "Here is some totally random text.", key: "5"},
-      	]);
+      		]);
 
 		var essay = document.getElementById("draft-text");
 		if (!essay) // we might be using medium
 		{
 			essay = editor.medium.element;
+			editor.medium.placeholder.innerText = "";
 		}
 		essay.innerHTML = "I present the first point of the essay. My second point is really important, too. This might be completely unrelated. The fourth is the best point. But look, found my third point!"
 	}
