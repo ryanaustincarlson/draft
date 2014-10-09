@@ -55,27 +55,20 @@ function DraftEditor(id, divID)
 	this.divID = divID;
 	this.document = document;
 
-	this.makeEditorArea = function (placeholder, autofocus) {
-		var p = this.document.createElement("p");
-		p.setAttribute("contenteditable", "true");
-		p.setAttribute("id", this.id);
-		
-		return p;
-	}
-
 	this.initialize = function()
 	{
 		var div = this.document.getElementById(this.divID);
-		var p = this.makeEditorArea(null, false);
+		var p = this.document.createElement("p");
+		p.setAttribute("contenteditable", "true");
+		p.setAttribute("id", this.id);
+		p.setAttribute("style", "min-height:80%;");
 		div.appendChild(p);
-
-		// this.createEditor()
 	}
 
 	this.prepareForProcessing = function()
 	{
 		var sentences = []
-		var text = this.document.getElementById(this.id).textContent;
+		var text = this.getText();
 		var start = 0;
 		// split on '.'
 		for (var i=0; i<text.length; i++)
@@ -96,9 +89,38 @@ function DraftEditor(id, divID)
 		}
 		return sentences;
 	}
+
+	this.getText = function()
+	{
+		return this.document.getElementById(this.id).textContent;
+	}
 }
 
 DraftEditor.prototype = new Editor();
+
+function MediumDraftEditor(id, divID)
+{
+	this.id = id;
+	this.divID = divID;
+	this.document = document;
+	this.medium = null;
+
+	this.initialize = function()
+	{
+		this.medium = new Medium({
+			element: document.getElementById(this.divID),
+			mode: Medium.richMode,
+			placeholder: 'Write your essay....'
+		});
+	}
+
+	this.getText = function()
+	{
+		return this.medium.element.textContent;
+	}
+}
+
+MediumDraftEditor.prototype = new DraftEditor();
 
 function DraftOutlineEditor(id, divID)
 {
