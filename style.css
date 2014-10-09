@@ -24,7 +24,7 @@
 #outline-editor {
 	float: left;
 	margin-right: 100px;
-	width: 50%;
+	/*width: 50%;*/
 	min-height: 100%;
 	background-color: #F5F5F5;
 }
@@ -32,7 +32,7 @@
 #editor {
 	float: right;
 	width: 100%;
-	min-height: 80%;
+	min-height: 100%;
 
 	background-color: #F5F5F0;
 	-webkit-box-shadow: 0px 3px 15px 2px #F5F5F0;

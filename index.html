@@ -110,7 +110,12 @@
 		var selectedNode = null;
 
 		$(window).load(function() {
-			$("#MySplitter").splitter();
+			$("#MySplitter").splitter({
+				minLeft: 350, 
+				sizeLeft: 400,
+				minRight: 500,
+				resizeToWidth: true
+			});
 
 			// editor = new DraftEditor("draft-text", "editor");
 			editor = new MediumDraftEditor("draft-text", "editor");
