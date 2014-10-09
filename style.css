@@ -23,22 +23,31 @@
 
 #outline-editor {
 	float: left;
-	margin-right: 10px;
-	width: 30%;
-	min-height: 80%;
+	margin-right: 100px;
+	width: 50%;
+	min-height: 100%;
 	background-color: #F5F5F5;
 }
 
 #editor {
 	float: right;
-	width: 69%;
+	width: 100%;
 	min-height: 80%;
 
 	background-color: #F5F5F0;
 	-webkit-box-shadow: 0px 3px 15px 2px #F5F5F0;
 	-moz-box-shadow: 0px 3px 15px 2px #F5F5F0;
 	box-shadow: 0px 3px 15px 2px #F5F5F0;
+	border-top: 1px dashed #ccc;
+	border-bottom: 1px dashed #ccc;
 	padding: 10px;
+}
+
+Medium:focus{
+	outline: 0;
+	-webkit-box-shadow: 0px 0px 20px 0px rgba(0,0,0,0.42);
+	-moz-box-shadow: 0px 0px 20px 0px rgba(0,0,0,0.42);
+	box-shadow: 0px 0px 20px 0px rgba(0,0,0,0.42);
 }
 
 #analyze-button, #clear-button {
@@ -48,3 +57,19 @@
 #fillin-button {
 	float: left;
 }
+
+/* splitter */
+#MySplitter {
+	height: 100%;
+	width: 100%;
+	border: 0px solid #aaa;
+}
+#MySplitter div {
+	overflow: auto;
+}
+.vsplitbar {
+	width: 5px;
+	background: #aaa;
+}
+
+
