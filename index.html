@@ -9,17 +9,16 @@
 		Draft
 	</title>
 
-	<!-- <link rel="stylesheet" href="../wysihtml5/website/css/stylesheet.css" -->
 	<script src="//ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js" type="text/javascript"></script>
 	<script src="//ajax.googleapis.com/ajax/libs/jqueryui/1/jquery-ui.min.js" type="text/javascript"></script>
 
 	<link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.1.0/css/bootstrap.min.css" />
 	<script src="//netdna.bootstrapcdn.com/bootstrap/3.1.0/js/bootstrap.min.js" type="text/javascript"></script>
 
-	<!-- <script src="//methvin.com/splitter/splitter.js" type="text/javascript"></script> -->
 	<script src="lib/splitter.js" type="text/javascript"></script>
 	<script src="lib/jquery.cookie.js" type="text/javascript"></script>
 
+	 
 	<link rel="stylesheet" href="./lib/ui.fancytree.css" type="text/css" class="skinswitcher">
 
 	<script src="lib/jquery.fancytree.js" type="text/javascript"></script>
@@ -33,6 +32,7 @@
 
 	<script src="lib/medium.js" type="text/javascript"></script>
 	<link rel="stylesheet" type="text/css" href="lib/medium.css" />
+	
 
 	<!-- Add code to initialize the outline when the document is loaded: -->
 	<script src="fancytree.js" type="text/javascript"> </script>
@@ -64,30 +64,45 @@
 
 <body>
 
+	<div id="draft-header" >
+		<h1 style="font-size:4em">Draft</h1>
+		<!-- <hr style="height:2px;" /> -->
+	</div>
+
 	<div id="MySplitter" >
 		<div class="editor" id="outline-editor" >
-			<br>
-			<h2>Outline</h2>
-			<!-- <textarea id="draft-outline" ></textarea> -->
-			<p>
-				<button id="btnExpandAll" class="btn btn-sm btn-primary" onclick="expandAll()">Expand all</button>
-				<button id="btnCollapseAll" class="btn btn-sm btn-warning" onclick="collapseAll()">Collapse all</button>
-				<button id="btnAddNode" class="btn btn-sm btn-primary" onclick="addNode()">Add Node</button>
-				<button id="btnLeft" class="btn btn-sm btn-primary" onclick="moveLeft()">&#8592;</button>
-				<button id="btnRight" class="btn btn-sm btn-primary" onclick="moveRight()">&#8594;</button>
-			</p>
-			<div id="tree"> </div>
+			<div id="outline-header" >
+				<!-- <br> -->
+				<h2>Outline</h2>
+				<!-- <textarea id="draft-outline" ></textarea> -->
+				<p>
+					<button id="btnExpandAll" class="btn btn-sm btn-primary" onclick="expandAll()">Expand all</button>
+					<button id="btnCollapseAll" class="btn btn-sm btn-warning" onclick="collapseAll()">Collapse all</button>
+					<button id="btnAddNode" class="btn btn-sm btn-primary" onclick="addNode()">Add Node</button>
+					<button id="btnLeft" class="btn btn-sm btn-primary" onclick="moveLeft()">&#8592;</button>
+					<button id="btnRight" class="btn btn-sm btn-primary" onclick="moveRight()">&#8594;</button>
+				</p>
+			</div>
+			<div>
+				<div id="tree"> </div>
+			</div>
 		</div>
 
 		<div class="editor" id="editor-section" >
-			<input id="analyze-button" type="button" value="Analyze" onclick="analyze()" >
-			<input id="clear-button" type="button" value="Clear Highlights" onclick="clearHighlights()" >
+			<div id="essay-header" >
+				<h2>Essay</h2>
+				
+				<input id="analyze-button" type="button" value="Analyze" onclick="analyze()" >
+				<input id="clear-button" type="button" value="Clear Highlights" onclick="clearHighlights()" >
 
-			<input id="manual-highlight" type="button" value="Manual Highlight" onclick="manualHighlight()" disabled >
-			<input id="fillin-button" type="button" value="Fill In" onclick="fillin()" >
-			<br>
-			<h2>Essay</h2>
-			<div id="editor" ></div>
+				<input id="manual-highlight" type="button" value="Manual Highlight" onclick="manualHighlight()" disabled >
+				<input id="fillin-button" type="button" value="Fill In" onclick="fillin()" >
+				
+				<br> 
+			</div>
+			<div>
+				<div id="editor" >	</div>
+			</div>
 			<!-- <textarea id="draft-text" ></textarea> -->
 		</div>
 	</div>
@@ -114,7 +129,7 @@
 				minLeft: 350, 
 				sizeLeft: 400,
 				minRight: 500,
-				resizeToWidth: true
+				resizeToWidth: true,
 			});
 
 			// editor = new DraftEditor("draft-text", "editor");

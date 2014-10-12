@@ -6,33 +6,88 @@
 	box-sizing: border-box;
 }
 
-/*.editor {
-	display: inline;
+/*html, body {
+	height:100%;
+	width:100%;
+	position:relative;
 }*/
 
-/*textarea {
-	display: inline;
-	resize: none;
-	height: 50%;
-	border: 1px solid black;
+#draft-header, #outline-header, #essay-header {
+	position:fixed;
+	z-index: 2;
+}
+
+#draft-header {
+	/*background-color: black;*/
+	/*color: white;*/
+	background-color: #E0E0E0;
+	height:100px;
+	width:100%;
+	/*padding: 0px;*/
+	text-align: center;
+	margin: auto;
+	position:fixed;
+	top:0px;
+}
+
+/* splitter */
+#MySplitter {
+	height: 80%;
+	width: 100%;
+	border: 0px solid #aaa;
+	position:absolute;
+	margin-top:100px;
+	z-index:0;
+}
+
+#MySplitter div {
+	overflow: auto;
+}
+
+.vsplitbar {
+	border: 2px dashed #aaa;
+}
+
+/*hr {
+    border: 0;
+    height: 1px;
+    background-image: -webkit-linear-gradient(left, rgba(0,0,0,0), rgba(0,0,0,0.75), rgba(0,0,0,0)); 
+    background-image:    -moz-linear-gradient(left, rgba(0,0,0,0), rgba(0,0,0,0.75), rgba(0,0,0,0)); 
+    background-image:     -ms-linear-gradient(left, rgba(0,0,0,0), rgba(0,0,0,0.75), rgba(0,0,0,0)); 
+    background-image:      -o-linear-gradient(left, rgba(0,0,0,0), rgba(0,0,0,0.75), rgba(0,0,0,0)); 
 }*/
 
-/*#draft-outline, #draft-text {
-	border: 1px solid black;
+/*h1 {
+	font-style: 10em;
 }*/
+
+#outline-header, #essay-header {
+	background-color: white;
+	width: 100%;
+}
+
+.editor
+{
+	padding-left: 10px;
+	padding-right: 10px;
+}
 
 #outline-editor {
+	/*position: relative;*/
 	float: left;
 	margin-right: 100px;
-	/*width: 50%;*/
+	width: 50%;
 	min-height: 100%;
-	background-color: #F5F5F5;
+	/*background-color: #F5F5F5;*/
 }
 
 #editor {
-	float: right;
+	/*position: fixed;*/
+	/*float: right;*/
 	width: 100%;
-	min-height: 100%;
+	min-height: 80%;
+	margin-top: 100px;
+	/*left:300px;*/
 
 	background-color: #F5F5F0;
 	-webkit-box-shadow: 0px 3px 15px 2px #F5F5F0;
@@ -43,33 +98,25 @@
 	padding: 10px;
 }
 
+#tree {
+	position: fixed;
+	margin-top: 100px;
+}
+
 Medium:focus{
 	outline: 0;
 	-webkit-box-shadow: 0px 0px 20px 0px rgba(0,0,0,0.42);
 	-moz-box-shadow: 0px 0px 20px 0px rgba(0,0,0,0.42);
 	box-shadow: 0px 0px 20px 0px rgba(0,0,0,0.42);
+	position:fixed;
 }
 
 #analyze-button, #clear-button {
-	float:right;
+	float:left;
 }
 
 #fillin-button {
 	float: left;
-}
-
-/* splitter */
-#MySplitter {
-	height: 100%;
-	width: 100%;
-	border: 0px solid #aaa;
-}
-#MySplitter div {
-	overflow: auto;
-}
-.vsplitbar {
-	width: 5px;
-	background: #aaa;
 }
 
 
