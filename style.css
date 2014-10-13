@@ -4,6 +4,7 @@
 	-moz-box-sizing: border-box; 
 	-webkit-box-sizing: border-box; 
 	box-sizing: border-box;
+	font-family: "Verdana";
 }
 
 /*html, body {
@@ -28,6 +29,42 @@
 	margin: auto;
 	position:fixed;
 	top:0px;
+}
+
+#draft-header h1 {
+	position: relative;
+	left:-50px;
+	display: inline;
+	vertical-align: middle;
+	/*margin-left: 10px;*/
+	/*float: left;*/
+}
+
+.frame {
+	height: 100px;
+	width: 100px;
+	/*border: 1px solid red;*/
+	white-space: nowrap;
+
+	text-align: center;
+	margin-top: 1em 0;
+	display: inline;
+}
+
+.image-helper {
+	display: inline-block;
+    height: 100%;
+    vertical-align: middle;
+}
+
+#draft-header img {
+	position: relative;
+	left:-50px;
+	vertical-align: middle;
+	/*display: inline;*/
+	width: 80px;
+	height: 80px;
+	max-width: 100%;
 }
 
 /* splitter */
@@ -101,22 +138,25 @@
 #tree {
 	position: fixed;
 	margin-top: 100px;
+	white-space: normal;
 }
 
-Medium:focus{
+/*Medium:focus{
 	outline: 0;
 	-webkit-box-shadow: 0px 0px 20px 0px rgba(0,0,0,0.42);
 	-moz-box-shadow: 0px 0px 20px 0px rgba(0,0,0,0.42);
 	box-shadow: 0px 0px 20px 0px rgba(0,0,0,0.42);
 	position:fixed;
-}
+}*/
 
 #analyze-button, #clear-button {
 	float:left;
 }
 
 #fillin-button {
-	float: left;
+	position: fixed;
+	right:0;
+	top:0;
 }
 
 

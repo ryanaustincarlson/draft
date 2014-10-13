@@ -65,7 +65,12 @@
 <body>
 
 	<div id="draft-header" >
+		<div class=frame >
+			<span class="image-helper"></span>
+			<img src="img/pencil.png" />
+		</div>
 		<h1 style="font-size:4em">Draft</h1>
+		<button id="fillin-button" onclick="fillin()">?</button>
 		<!-- <hr style="height:2px;" /> -->
 	</div>
 
@@ -97,7 +102,6 @@
 				<input id="clear-button" type="button" value="Clear Highlights" onclick="clearHighlights()" >
 
 				<input id="manual-highlight" type="button" value="Manual Highlight" onclick="manualHighlight()" disabled >
-				<input id="fillin-button" type="button" value="Fill In" onclick="fillin()" >
 				
 				<br> 
 			</div>
@@ -208,7 +212,7 @@
 	{
 		$("#tree").fancytree("option", "source", [
 			{title: "This is the first point of the essay.", key: "1"},
-      		{title: "Here's the second point, which is also really important!", key: "2"}, //expanded:true, children: [
+      		{title: "The second point is also really important!", key: "2"}, //expanded:true, children: [
       		{title: "And look, a third point!", key: "3"},
       		{title: "The fourth point is the very best.", key: "4"}, //expanded:true, children: [
       		{title: "Here is some totally random text.", key: "5"},
