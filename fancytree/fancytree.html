@@ -144,6 +144,23 @@ class="skinswitcher">
   });
  }
 
+ function removeNode()
+ {
+  var tree = $("#tree").fancytree("getTree");
+  var node = tree.getActiveNode();
+
+  if (node)
+  {
+    var children = node.getChildren();
+    if (children)
+    {
+      node.removeChildren();
+      node.parent.addChildren(children);
+    }
+    node.remove();
+  }
+}
+
  function addNode()
  {
   var newData = {title: ""};
@@ -218,6 +235,7 @@ function moveLeft()
   <button id="btnExpandAll" class="btn btn-sm btn-primary" onclick="expandAll()">Expand all</button>
   <button id="btnCollapseAll" class="btn btn-sm btn-warning" onclick="collapseAll()">Collapse all</button>
   <button id="btnAddNode" class="btn btn-sm btn-primary" onclick="addNode()">Add Node</button>
+  <button id="btnRemoveNode" class="btn btn-sm btn-primary" onclick="removeNode()">Rmove Node</button>
   <button id="btnLeft" class="btn btn-sm btn-primary" onclick="moveLeft()">&lt;--</button>
   <button id="btnRight" class="btn btn-sm btn-primary" onclick="moveRight()">--&gt;</button>
 </p>
