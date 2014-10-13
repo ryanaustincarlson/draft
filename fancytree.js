@@ -134,6 +134,31 @@ function addNode()
   newNode.editStart();
 }
 
+function removeNode()
+{
+  var tree = $("#tree").fancytree("getTree");
+  var node = tree.getActiveNode();
+  var root = $("#tree").fancytree("getRootNode");
+
+  if (node)
+  {
+    var children = node.getChildren();
+    if (children)
+    {
+      node.removeChildren();
+      node.parent.addChildren(children);
+    }
+    if (root.getChildren().length > 1)
+    {
+      node.remove();
+    }
+    else 
+    {
+      alert("Cannot remove the last bullet point. Write something instead :)")
+    }
+  }
+}
+
 function moveRight()
 {
   var tree = $("#tree").fancytree("getTree");
