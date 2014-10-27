@@ -149,14 +149,14 @@
 
 #fillin-button {
 	position: fixed;
-	right:0;
-	top:0;
+	right:5;
+	top:5;
 }
 
 #tutorial-button {
 	position: fixed;
-	right:30;
-	top: 0;
+	right:70;
+	top:5;
 }
 
 /*#tutorial*/
