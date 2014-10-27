@@ -153,4 +153,12 @@
 	top:0;
 }
 
+#tutorial-button {
+	position: fixed;
+	right:30;
+	top: 0;
+}
+
+/*#tutorial*/
+
 
