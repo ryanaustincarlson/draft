@@ -7,7 +7,7 @@ function Tutorial(document)
 
 	this.nextStep_startOutline = function()
 	{
-		this.jTutorialText.text("Let's start with the outline. Select this first bullet point, press Enter to rename, and write your first point. Then click Next.")
+		this.jTutorialText.text("Let's start with the outline. Select the first bullet point, press Enter to edit, and write your first point. Then click Next.")
 	}
 
 	this.nextStep_addToOutline = function()
@@ -27,7 +27,7 @@ function Tutorial(document)
 
 	this.nextStep_analyzeExplained = function()
 	{
-		this.jTutorialText.text("If you didn't see some highlighting, try to make your sentnces more closely match the outline (this is a beta, after all)");
+		this.jTutorialText.text("If you didn't see any highlighting, try to make your sentences more closely match the outline (this is a beta, after all)");
 	}
 
 	this.nextStep_manualHighlights = function()
@@ -42,7 +42,7 @@ function Tutorial(document)
 
 	this.nextStep_done = function()
 	{
-		this.jTutorialText.text("And you're done! Happy writing! I hope this helps!")
+		this.jTutorialText.text("And you're done - happy writing!")
 		this.jTutorialButtonNext.text("Done");
 		this.jTutorialButtonNext.click(this.closeTutorial);
 	}
