@@ -34,7 +34,7 @@ $(function(){
       },
 //      source: {url: "ajax-tree-plain.json", debugDelay: 1000},
       // source: {url: "ajax-tree-taxonomy.json", debugDelay: 1000},
-      source: [{title:""}],
+      source: [{title:"Start your outline..."}],
       edit: {
         // Available options with their default:
         adjustWidthOfs: 4,   // null: don't adjust input size to content
