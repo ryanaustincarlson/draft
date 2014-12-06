@@ -81,17 +81,47 @@ function DraftEditor(id, divID)
 		var sentences = []
 		var text = this.getText();
 		var start = 0;
-		// split on '.'
+
+		var ignoring = false;
+		var iOffset = 0;
+
+		currentSentenceText = ''
+
+		// split on '.', '!', '?'
 		for (var i=0; i<text.length; i++)
 		{
 			var letter = text[i];
+			// console.log(letter); // TODO remove me
+
+			if (letter == '<' || letter == '&')
+			{
+				ignoring = true;
+			}
+
+			if (ignoring)
+			{
+				if (letter == ">" || letter == ';')
+				{
+					ignoring = false;
+				}
+				else
+				{
+					iOffset += 1
+				}
+				continue;
+			}
+
+			currentSentenceText += letter
+
+			var adjustedIndex = i-iOffset;
 			if (letter == '.' || letter == '!' || letter == '?')
 			{
-				// var sentence = new DraftEditorSentence(this, text.substring(start, i), start, i)
-				var sentence = new this.sentenceClass(this, text.substring(start, i), start, i)
+				var sentence = new this.sentenceClass(this, currentSentenceText, start, adjustedIndex)
+				console.log(sentence)
+				currentSentenceText = ''
 				
 				sentences.push(sentence);
-				start = i+1;
+				start = adjustedIndex+1;
 			}
 			
 		}
@@ -145,7 +175,8 @@ function MediumDraftEditor(id, divID)
 
 	this.getText = function()
 	{
-		return this.medium.element.textContent;
+		// return this.medium.element.textContent;
+		return this.medium.element.innerHTML;
 	}
 }
 

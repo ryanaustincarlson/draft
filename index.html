@@ -160,7 +160,8 @@
 
 		function analyze()
 		{
-			analyzer.analyze()
+			analyzer.clearHighlights();
+			analyzer.analyze();
 		}
 
 		function clearHighlights()
@@ -229,11 +230,16 @@
 	function fillin()
 	{
 		$("#tree").fancytree("option", "source", [
-			{title: "This is the first point of the essay.", key: "1"},
-      		{title: "The second point is also really important!", key: "2"}, //expanded:true, children: [
-      		{title: "And look, a third point!", key: "3"},
-      		{title: "The fourth point is the very best.", key: "4"}, //expanded:true, children: [
-      		{title: "Here is some totally random text.", key: "5"},
+			// {title: "dinosaurs are cannibals", key: "1"},
+			// {title: "kittens", key:"3"},
+			// {title: "puppies", key: "2"},
+
+			{title: "Dinosaurs are the best animals", key: "1"},
+      		{title: "Dinosaurs = terrifying because large, sharp teeth, kill you", key: "2"}, //expanded:true, children: [
+      		{title: "Dinosaurs = awesome because lived millions of years ago", key: "3"},
+      		{title: "Dinosaurs = awesome because movies and books written about them", key: "4"},
+      		{title: "Birds are descendants of dinsoaurs - we see dinosaurs every day", key: "5"}, //expanded:true, children: [
+      		{title: "In closing, dinosaurs are weird and amazing.", key: "6"},
       		]);
 
 		var essay = document.getElementById("draft-text");
@@ -242,7 +248,8 @@
 			essay = editor.medium.element;
 			editor.medium.placeholder.innerText = "";
 		}
-		essay.innerHTML = "I present the first point of the essay. My second point is really important, too. This might be completely unrelated. The fourth is the best point. But look, found my third point!"
+		// essay.innerHTML = "dinosaurs are definitely cannibals.<br>kittens. I'm done now.<br>puppies.<br>No I'm really done.";
+		essay.innerHTML = "Dinosaurs are the best animals that ever inhabited the planet. They are terrifying, awesome, and they're not even really extinct! I mean they are, but, well, keep reading and I'll explain.<br><br>Dinosaurs are terrifying because they are large and have sharp teeth and they can definitely kill you. I mean, not you, because they lived a long time ago (more on that later), but someone of similar stature to you. Like other animals from the time. Some dinosaurs at plants, but many ate other living organisms. The Tyrannosaurus Rex ate lots of organisms, and it was fearsome and huge and had huge teeth (but tiny hands).<br><br>Dinosaurs are awesome partly because they lived millions and millions of years ago! That inherently inspires awe — which is what this is all about, of course. But more than that, they are awesome because there are a lot of books about them and even a few movies. Jurassic Park is about them, and so is Jurassic Park 2 (and 3 and 4, which is coming soon!). Anyway, I submit to you that dinosaurs are awesome, otherwise why would smart people write books and make movies about them?<br><br>Finally, I want to talk about birds. Birds are directly descended from dinosaurs, which means we kind of see dinosaurs every day. Some birds eat plants, and others eat meet (just like the dinosaurs), and while most birds do fly, some birds don't. Actually, are penguins even descendants of dinosaurs? That sounds like the topic of another essay..  Anyway, birds are great and I wanted to talk about them.<br><br>I hope I have convinced you that dinosaurs are the best. Dinosaurs are weird and amazing and they're not even gone from this world, so treat birds with the respect they deserve. And if you have pet birds, you can put a sheet over their cage and make them go to sleep. I wonder, would that also works on dinosaurs?";
 	}
 </script>
 
